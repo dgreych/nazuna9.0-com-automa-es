@@ -4139,7 +4139,7 @@ Código: *${roleCode}*`,
     if  (antitoxic && antitoxic.isEnabled && antitoxic.isEnabled(from) && body && ia) {
     // Função wrapper para a IA do antitoxic
     const aiFunction = (prompt) => {
-      return ia.makeCognimaRequest('moonshotai/kimi-k2-instruct', prompt, null)
+      return ia.makeCognimaRequest('meta/llama-3.1-70b-instruct', prompt, null)
     .then(response => response?.data?.choices?.[0]?.message?.content || '');
     };
     
@@ -12871,7 +12871,7 @@ case 'kimik2':
     if  (!q) return reply(`🤔 Qual sua dúvida para o Kimi? Informe a pergunta após o comando! Exemplo: ${prefix}${command} quem descobriu o Brasil? 🌍`);
     
     reply(`⏳ Só um segundinho, estou consultando o Kimi... ✨`).then(() => {
-    ia.makeCognimaRequest('moonshotai/kimi-k2-instruct', q, null).then((response) => {
+    ia.makeCognimaRequest('meta/llama-3.1-70b-instruct', q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API Kimi:', e);
@@ -15563,7 +15563,7 @@ case 'dictionary':
             const prompt = `Defina a palavra "${palavra}" em português de forma completa e fofa. Inclua a classe gramatical, os principais significados e um exemplo de uso em uma frase curta e bonitinha.`;
             
             try {
-                const bahz = await ia.makeCognimaRequest('moonshotai/kimi-k2-instruct', prompt, null);
+                const bahz = await ia.makeCognimaRequest('meta/llama-3.1-70b-instruct', prompt, null);
                 reply(formatAIResponse(bahz.data.choices[0].message.content));
             } catch (e) {
                 console.error("Erro geral ao buscar no dicionário:", e);
