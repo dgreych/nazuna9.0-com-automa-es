@@ -5,18 +5,20 @@
   "type": "module",
   "main": "dados/src/connect.js",
   "scripts": {
-    "start": "node dados/src/.scripts/start-v9.js",
+    "start": "node dados/src/.scripts/start-v9-fixed.js",
     "start:validated": "npm run validate:local && npm start",
-    "dev": "nodemon dados/src/.scripts/start-v9.js",
-    "validate:ci": "node dados/src/.scripts/validate-local.js --ci && node dados/src/.scripts/validate-release-output.js",
-    "validate:local": "node dados/src/.scripts/validate-local.js --local && node dados/src/.scripts/validate-release-output.js",
-    "validate:deploy": "node dados/src/.scripts/validate-local.js --deploy && node dados/src/.scripts/validate-release-output.js",
+    "dev": "nodemon dados/src/.scripts/start-v9-fixed.js",
+    "validate:ci": "node dados/src/.scripts/validate-local.js --ci && node dados/src/.scripts/applyCriticalRuntimeFixes.js && node dados/src/.scripts/validate-critical-runtime.js && node dados/src/.scripts/validate-release-output.js && npm run test:regressions",
+    "validate:local": "node dados/src/.scripts/validate-local.js --local && node dados/src/.scripts/applyCriticalRuntimeFixes.js && node dados/src/.scripts/validate-critical-runtime.js && node dados/src/.scripts/validate-release-output.js && npm run test:regressions",
+    "validate:deploy": "node dados/src/.scripts/validate-local.js --deploy && node dados/src/.scripts/applyCriticalRuntimeFixes.js && node dados/src/.scripts/validate-critical-runtime.js && node dados/src/.scripts/validate-release-output.js && npm run test:regressions",
     "validate:public": "npm run validate:ci && node dados/src/.scripts/audit-public.js",
     "build:server": "node dados/src/.scripts/build-server.js --private && node dados/src/.scripts/sanitize-server-build.js --private",
     "build:server:artifact": "node dados/src/.scripts/build-server.js --public && node dados/src/.scripts/sanitize-server-build.js --public",
     "config": "node dados/src/.scripts/config.js",
     "config:install": "node dados/src/.scripts/config.js --install",
-    "update": "node dados/src/.scripts/update.js"
+    "update": "node dados/src/.scripts/update.js",
+    "test:regressions": "node dados/src/.scripts/test-regressions.js",
+    "diagnose:nvidia": "node dados/src/.scripts/diagnose-nvidia.js"
   },
   "repository": {
     "type": "git",
