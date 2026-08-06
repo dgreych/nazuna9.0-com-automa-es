@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/nazuna-gyomei-banner.svg" alt="NAZUNA BOT - versão modificada GYOMEI" width="100%">
+  <img src="assets/nazuna-gyomei-banner.jpg" alt="NAZUNA BOT - versão modificada GYOMEI" width="100%">
 </p>
 
 <h1 align="center">NAZUNA BOT • GYOMEI</h1>
@@ -28,7 +28,7 @@ Versão modificada atual: `1.0.0`.
 ## Principais melhorias
 
 - personalidade GYOMEI com identidade e comportamento protegidos;
-- IA acionada por menção ou resposta direta ao bot;
+- IA acionada por menção ou resposta direta ao bot, usando NVIDIA e `meta/llama-3.1-70b-instruct`;
 - prompts adicionais configuráveis pelos donos;
 - donos adicionais com privilégios administrativos;
 - transcrição manual e automática de áudio;
@@ -47,7 +47,7 @@ Este repositório mantém as responsabilidades separadas e não remove os crédi
 
 **Hiudy (Hiduy)**
 
-- WhatsApp: https://wa.me/553391967445
+- WhatsApp: [falar com Hiudy](https://wa.me/553391967445)
 - GitHub: https://github.com/hiudyy
 - Instagram: https://instagram.com/hiudyyy_
 
@@ -55,7 +55,7 @@ Este repositório mantém as responsabilidades separadas e não remove os crédi
 
 **DevTokyo**
 
-- WhatsApp: https://wa.me/5532985076326
+- WhatsApp: [falar com DevTokyo](https://wa.me/5532985076326)
 - GitHub: https://github.com/DevTokyoVx
 - Repositório original atual: https://github.com/DevTokyoVx/nazuna
 
@@ -71,7 +71,7 @@ Este repositório mantém as responsabilidades separadas e não remove os crédi
 
 Contatos:
 
-- WhatsApp: https://wa.me/5522997028553
+- WhatsApp: [falar com Alaska_dev](https://wa.me/5522997028553)
 - Repositório: https://github.com/dgreych/nazuna9.0-com-automa-es
 
 O comando `!criador` apresenta os três níveis de autoria dentro do bot.
@@ -80,7 +80,7 @@ O comando `!criador` apresenta os três níveis de autoria dentro do bot.
 
 Entre para acompanhar atualizações, testes e a comunidade:
 
-**https://chat.whatsapp.com/Ju0zjLiBLe28eNGUu2gapY**
+**[Entrar no grupo oficial](https://chat.whatsapp.com/Ju0zjLiBLe28eNGUu2gapY)**
 
 ## Comandos adicionados
 
@@ -162,13 +162,44 @@ As instruções personalizadas são acrescentadas ao prompt protegido. Elas não
 
 > Não atualize Baileys ou pacotes centrais diretamente em produção. Primeiro valide em uma instalação de teste, porque dependência quebrada raramente manda aviso prévio por educação.
 
-## Instalação para testes
+## Instalação simplificada
+
+Escolha seu sistema, instale **Node.js 20 ou superior** e siga somente o bloco correspondente.
+
+### Windows — PowerShell
+
+```powershell
+git clone https://github.com/dgreych/nazuna9.0-com-automa-es.git
+cd nazuna9.0-com-automa-es
+Copy-Item .env.example .env.local
+npm ci
+npm start
+```
+
+### Linux — Debian, Ubuntu e derivados
 
 ```bash
 git clone https://github.com/dgreych/nazuna9.0-com-automa-es.git
 cd nazuna9.0-com-automa-es
+cp -n .env.example .env.local
+chmod 600 .env.local
+npm ci
 npm start
 ```
+
+### Android — Termux
+
+```bash
+pkg update -y
+pkg install git nodejs-lts ffmpeg -y
+git clone https://github.com/dgreych/nazuna9.0-com-automa-es.git
+cd nazuna9.0-com-automa-es
+cp -n .env.example .env.local
+npm ci
+npm start
+```
+
+> Em hospedagens com `build.zip`, extraia os arquivos diretamente na raiz do contêiner. Não crie uma pasta envolvendo o projeto e não execute `npm install` quando `node_modules` já estiver incluído.
 
 A sessão do WhatsApp é armazenada localmente em:
 
@@ -284,7 +315,7 @@ Consulte [DEPLOY.md](DEPLOY.md) antes de enviar a build ao servidor.
 
 Atendimento direto pelo WhatsApp:
 
-**https://wa.me/5522997028553?text=Ol%C3%A1%21%20Tenho%20interesse%20em%20hospedar%20a%20NAZUNA%20BOT%20-%20vers%C3%A3o%20GYOMEI%20a%20partir%20de%20R%24%2016%2C99%2Fm%C3%AAs.%20Pode%20me%20passar%20os%20detalhes%3F**
+**[Falar sobre hospedagem](https://wa.me/5522997028553)**
 
 ## Teste de fumaça obrigatório
 

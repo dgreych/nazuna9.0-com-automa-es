@@ -8,6 +8,37 @@ const __dirname = path.dirname(__filename);
 // Caminho do arquivo de comandos VIP
 const VIP_COMMANDS_FILE = path.join(__dirname, '../../database/dono/vipCommands.json');
 
+const DEFAULT_CATEGORIES = Object.freeze({
+  download: '📥 Downloads',
+  diversao: '🎮 Diversão',
+  utilidade: '🛠️ Utilidade',
+  ia: '🤖 Inteligência Artificial',
+  editor: '✨ Editor',
+  info: 'ℹ️ Informação',
+  outros: '📦 Outros'
+});
+
+function createDefaultData(commands = []) {
+  return {
+    commands: Array.isArray(commands) ? commands : [],
+    categories: { ...DEFAULT_CATEGORIES }
+  };
+}
+
+function normalizeVipCommandsData(rawData) {
+  // Compatibilidade com formatos antigos: [] e objetos sem `commands`.
+  if (Array.isArray(rawData)) return createDefaultData(rawData);
+
+  if (!rawData || typeof rawData !== 'object') return createDefaultData();
+
+  const commands = Array.isArray(rawData.commands) ? rawData.commands : [];
+  const categories = rawData.categories && typeof rawData.categories === 'object' && !Array.isArray(rawData.categories)
+    ? { ...DEFAULT_CATEGORIES, ...rawData.categories }
+    : { ...DEFAULT_CATEGORIES };
+
+  return { ...rawData, commands, categories };
+}
+
 /**
  * Garante que o arquivo de comandos VIP existe
  */
@@ -19,18 +50,7 @@ function ensureVipCommandsFile() {
   }
   
   if (!fs.existsSync(VIP_COMMANDS_FILE)) {
-    const defaultData = {
-      commands: [],
-      categories: {
-        download: '📥 Downloads',
-        diversao: '🎮 Diversão',
-        utilidade: '🛠️ Utilidade',
-        ia: '🤖 Inteligência Artificial',
-        editor: '✨ Editor',
-        info: 'ℹ️ Informação',
-        outros: '📦 Outros'
-      }
-    };
+    const defaultData = createDefaultData();
     fs.writeFileSync(VIP_COMMANDS_FILE, JSON.stringify(defaultData, null, 2));
   }
 }
@@ -41,11 +61,19 @@ function ensureVipCommandsFile() {
 function loadVipCommands() {
   ensureVipCommandsFile();
   try {
-    const data = fs.readFileSync(VIP_COMMANDS_FILE, 'utf8');
-    return JSON.parse(data);
+    const fileContent = fs.readFileSync(VIP_COMMANDS_FILE, 'utf8');
+    const parsed = JSON.parse(fileContent);
+    const normalized = normalizeVipCommandsData(parsed);
+
+    // Repara silenciosamente arquivos antigos como `{}` ou `[]`.
+    if (JSON.stringify(parsed) !== JSON.stringify(normalized)) {
+      fs.writeFileSync(VIP_COMMANDS_FILE, JSON.stringify(normalized, null, 2));
+    }
+
+    return normalized;
   } catch (error) {
     console.error('Erro ao carregar comandos VIP:', error);
-    return { commands: [], categories: {} };
+    return createDefaultData();
   }
 }
 
@@ -55,7 +83,8 @@ function loadVipCommands() {
 function saveVipCommands(data) {
   ensureVipCommandsFile();
   try {
-    fs.writeFileSync(VIP_COMMANDS_FILE, JSON.stringify(data, null, 2));
+    const normalized = normalizeVipCommandsData(data);
+    fs.writeFileSync(VIP_COMMANDS_FILE, JSON.stringify(normalized, null, 2));
     return true;
   } catch (error) {
     console.error('Erro ao salvar comandos VIP:', error);
@@ -74,7 +103,7 @@ function addVipCommand(command, description, category = 'outros', usage = '') {
   const data = loadVipCommands();
   
   // Normaliza o comando
-  const normalizedCommand = command.toLowerCase().trim();
+  const normalizedCommand = String(command || '').toLowerCase().trim();
   
   // Verifica se o comando já existe
   const existingIndex = data.commands.findIndex(cmd => cmd.command === normalizedCommand);
@@ -94,9 +123,9 @@ function addVipCommand(command, description, category = 'outros', usage = '') {
   // Adiciona o novo comando
   const newCommand = {
     command: normalizedCommand,
-    description: description.trim(),
+    description: String(description || '').trim(),
     category: category,
-    usage: usage.trim() || `${normalizedCommand}`,
+    usage: String(usage || '').trim() || `${normalizedCommand}`,
     addedAt: new Date().toISOString(),
     enabled: true
   };
@@ -123,7 +152,7 @@ function addVipCommand(command, description, category = 'outros', usage = '') {
  */
 function removeVipCommand(command) {
   const data = loadVipCommands();
-  const normalizedCommand = command.toLowerCase().trim();
+  const normalizedCommand = String(command || '').toLowerCase().trim();
   
   const index = data.commands.findIndex(cmd => cmd.command === normalizedCommand);
   
@@ -158,7 +187,7 @@ function removeVipCommand(command) {
  */
 function isVipCommand(command) {
   const data = loadVipCommands();
-  const normalizedCommand = command.toLowerCase().trim();
+  const normalizedCommand = String(command || '').toLowerCase().trim();
   return data.commands.some(cmd => cmd.command === normalizedCommand && cmd.enabled);
 }
 
@@ -183,7 +212,7 @@ function listVipCommands(category = null) {
  */
 function getVipCommand(command) {
   const data = loadVipCommands();
-  const normalizedCommand = command.toLowerCase().trim();
+  const normalizedCommand = String(command || '').toLowerCase().trim();
   return data.commands.find(cmd => cmd.command === normalizedCommand);
 }
 
@@ -227,7 +256,7 @@ function groupVipCommandsByCategory() {
  */
 function toggleVipCommand(command, enabled) {
   const data = loadVipCommands();
-  const normalizedCommand = command.toLowerCase().trim();
+  const normalizedCommand = String(command || '').toLowerCase().trim();
   
   const cmdIndex = data.commands.findIndex(cmd => cmd.command === normalizedCommand);
   
