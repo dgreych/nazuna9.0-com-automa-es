@@ -339,6 +339,7 @@ function getVipStats() {
 }
 
 export {
+  normalizeVipCommandsData,
   addVipCommand,
   removeVipCommand,
   isVipCommand,

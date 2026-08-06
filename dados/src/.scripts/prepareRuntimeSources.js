@@ -15,17 +15,20 @@ function replaceRequired(source, search, replacement, description) {
 function patchIaSource(source) {
   let output = source;
 
-  output = replaceRequired(
-    output,
-    `import userContextDB from '../../utils/userContextDB.js';`,
-    `import userContextDB from '../../utils/userContextDB.js';\nimport * as automacoesV9 from '../../utils/gyomeiRuntime.js';`,
-    'import das configurações do Gyomei na IA'
-  );
+  if (!output.includes(`import * as automacoesV9 from '../../utils/gyomeiRuntime.js';`)) {
+    output = replaceRequired(
+      output,
+      `import userContextDB from '../../utils/userContextDB.js';`,
+      `import userContextDB from '../../utils/userContextDB.js';\nimport * as automacoesV9 from '../../utils/gyomeiRuntime.js';`,
+      'import das configurações do Gyomei na IA'
+    );
+  }
 
   if (output.includes('moonshotai/kimi-k2-instruct')) {
-    output = output.replaceAll('moonshotai/kimi-k2-instruct', 'meta/llama-3.1-70b-instruct');
-  } else if (!output.includes('meta/llama-3.1-70b-instruct')) {
-    throw new Error('Patch obrigatório não encontrado: modelo de IA conhecido');
+    throw new Error('Modelo descontinuado encontrado diretamente na fonte da IA.');
+  }
+  if (!output.includes('meta/llama-3.1-70b-instruct') && !output.includes('DEFAULT_NVIDIA_MODEL')) {
+    throw new Error('Modelo NVIDIA padrão não encontrado na fonte da IA.');
   }
 
   output = replaceRequired(
@@ -42,7 +45,7 @@ function patchIndexSource(source) {
   let output = source;
 
   if (output.includes('moonshotai/kimi-k2-instruct')) {
-    output = output.replaceAll('moonshotai/kimi-k2-instruct', 'meta/llama-3.1-70b-instruct');
+    throw new Error('Modelo descontinuado encontrado diretamente na fonte principal.');
   }
 
   output = replaceRequired(

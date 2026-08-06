@@ -2,181 +2,88 @@
   <img src="assets/nazuna-gyomei-banner.jpg" alt="NAZUNA BOT - versão modificada GYOMEI" width="100%">
 </p>
 
-<h1 align="center">NAZUNA BOT • GYOMEI</h1>
+<h1 align="center">NAZUNA BOT • versão modificada GYOMEI</h1>
 
 <p align="center">
-  <strong>Uma base antiga recuperada, corrigida e reforçada.</strong><br>
-  Nazuna 9.0 com novos comandos, automações, personalidade GYOMEI e deploy controlado.
+  <strong>Assistente para WhatsApp com gestão de grupos, automações, utilidades e personalidade configurável.</strong>
 </p>
 
 <p align="center">
-  <a href="https://chat.whatsapp.com/Ju0zjLiBLe28eNGUu2gapY"><strong>ENTRAR NO GRUPO DO WHATSAPP</strong></a>
+  <a href="https://github.com/dgreych/nazuna9.0-com-automa-es/actions/workflows/gyomei-validate.yml"><img alt="Validação" src="https://img.shields.io/github/actions/workflow/status/dgreych/nazuna9.0-com-automa-es/gyomei-validate.yml?branch=main&label=build"></a>
+  <img alt="Node.js" src="https://img.shields.io/badge/Node.js-20%2B-339933?logo=node.js&logoColor=white">
+  <img alt="WhatsApp" src="https://img.shields.io/badge/WhatsApp-Baileys-25D366?logo=whatsapp&logoColor=white">
+  <img alt="Edição" src="https://img.shields.io/badge/edição-GYOMEI-7D3CFF">
+</p>
+
+<p align="center">
+  <a href="https://chat.whatsapp.com/Ju0zjLiBLe28eNGUu2gapY"><strong>Grupo oficial</strong></a>
   ·
-  <a href="https://github.com/dgreych/nazuna9.0-com-automa-es"><strong>REPOSITÓRIO DA VERSÃO MODIFICADA</strong></a>
+  <a href="https://wa.me/5522997028553"><strong>Contato</strong></a>
+  ·
+  <a href="DEPLOY.md"><strong>Deploy</strong></a>
 </p>
 
 ---
 
-## Sobre esta versão
+## O projeto
 
-A **NAZUNA BOT - versão modificada GYOMEI** preserva a base Nazuna 9.0 e acrescenta correções, comandos e automações sem fingir que o projeto nasceu ontem, hábito bastante popular em repositórios derivados.
+A **NAZUNA BOT - versão modificada GYOMEI** preserva a base da Nazuna 9.0 e acrescenta correções de execução, novos comandos, automações administrativas, personalização e um fluxo de deploy reproduzível.
 
-**GYOMEI** identifica esta edição modificada e a personalidade principal da IA. O projeto-base continua sendo a **Nazuna Bot**.
+**GYOMEI** é o nome desta edição modificada e da personalidade principal da assistente. A origem da Nazuna e seus autores permanecem creditados no repositório e no comando `!criador`.
 
-Versão modificada atual: `1.0.0`.
+### Estado atual
 
-## Principais melhorias
+- integração NVIDIA validada em chamada real;
+- modelo `meta/llama-3.1-70b-instruct` definido diretamente na fonte;
+- endpoint `https://integrate.api.nvidia.com/v1/chat/completions`;
+- teste isolado da API e teste do fluxo completo da assistente;
+- aliases oficiais protegidos, incluindo `d`, `del`, `delete` e `deletar`;
+- resposta a mensagens citadas e mídias temporárias tratadas pelo comando de apagar;
+- `setmidia` corrigido para imagem, vídeo e GIF;
+- formatos antigos de comandos VIP normalizados;
+- build de servidor sem pasta-mãe e com auditoria de segredos.
 
-- personalidade GYOMEI com identidade e comportamento protegidos;
-- IA acionada por menção ou resposta direta ao bot, usando NVIDIA e `meta/llama-3.1-70b-instruct`;
-- prompts adicionais configuráveis pelos donos;
-- donos adicionais com privilégios administrativos;
-- transcrição manual e automática de áudio;
-- recuperação das cinco mensagens apagadas mais recentes;
-- mídias personalizadas para menus e respostas;
-- cartão curto e legível para comandos digitados incorretamente;
+## Recursos principais
+
+### Assistente GYOMEI
+
+- respostas naturais por menção ou resposta direta ao bot;
+- personalidade protegida e prompt adicional configurável;
+- contexto por usuário e histórico curto de conversa;
+- fallback seguro quando o modelo devolve texto em vez de JSON;
+- diagnóstico explícito para erros de autenticação, acesso, limite e indisponibilidade da NVIDIA.
+
+### Gestão de grupos
+
+- comandos administrativos;
+- donos adicionais;
+- configurações e antis por grupo;
+- recuperação de mensagens apagadas;
+- transcrição manual e automática de áudios;
+- mídia personalizada para menus e comandos;
+- sugestões visuais para comandos digitados incorretamente.
+
+### Deploy controlado
+
 - validação local, pública e de deploy;
-- artefato de servidor **root-ready**, sem pasta externa quebrando o startup;
-- build pública higienizada e build privada com estados locais controlados.
-
-## Créditos e origem
-
-Este repositório mantém as responsabilidades separadas e não remove os créditos originais.
-
-### Criação original da Nazuna
-
-**Hiudy (Hiduy)**
-
-- WhatsApp: [falar com Hiudy](https://wa.me/553391967445)
-- GitHub: https://github.com/hiudyy
-- Instagram: https://instagram.com/hiudyyy_
-
-### Continuidade da Nazuna
-
-**DevTokyo**
-
-- WhatsApp: [falar com DevTokyo](https://wa.me/5532985076326)
-- GitHub: https://github.com/DevTokyoVx
-- Repositório original atual: https://github.com/DevTokyoVx/nazuna
-
-### Aprimoramentos da versão modificada GYOMEI
-
-**Alaska_dev**
-
-- novos comandos e automações;
-- personalidade e comportamento da IA;
-- correções de compatibilidade;
-- validação e build de servidor;
-- documentação e fluxo de deploy.
-
-Contatos:
-
-- WhatsApp: [falar com Alaska_dev](https://wa.me/5522997028553)
-- Repositório: https://github.com/dgreych/nazuna9.0-com-automa-es
-
-O comando `!criador` apresenta os três níveis de autoria dentro do bot.
-
-## Grupo oficial desta versão
-
-Entre para acompanhar atualizações, testes e a comunidade:
-
-**[Entrar no grupo oficial](https://chat.whatsapp.com/Ju0zjLiBLe28eNGUu2gapY)**
-
-## Comandos adicionados
-
-### Transcrição
-
-Responda a um áudio, PTT ou documento de áudio:
-
-```text
-!t
-!transc
-!transcrever
-```
-
-Em grupos, administradores e donos podem alternar a transcrição automática:
-
-```text
-!autotr
-!autotransc
-```
-
-### Mensagens apagadas
-
-```text
-!return1
-!return2
-!return3
-!return4
-!return5
-```
-
-Também é aceita a forma:
-
-```text
-!return 1
-```
-
-A posição `1` representa a exclusão mais recente registrada pelo bot. Texto, imagem, vídeo, áudio, figurinha e documento são suportados quando a mídia ainda pode ser obtida.
-
-### Mídias personalizadas
-
-```text
-!menumidia
-!setmidia menu
-!setmidia menubn
-!setmidia qualquercomando
-!delmidia comando
-```
-
-O `setmidia` usa um downloader próprio para a mensagem citada e não depende das variáveis legadas de outros comandos.
-
-### Donos adicionais
-
-```text
-!adddono 55DDDNUMERO
-!deldono 55DDDNUMERO
-!listdonos
-```
-
-O alvo pode ser informado por número, JID, menção ou mensagem respondida. Somente o dono principal pode promover ou remover donos adicionais.
-
-### Prompts da IA
-
-```text
-!prompts
-!verprompt gyomei
-!setprompt gyomei SEU TEXTO
-!resetprompt gyomei
-```
-
-As instruções personalizadas são acrescentadas ao prompt protegido. Elas não removem as regras de identidade, interação e formato exigidas pelo processador.
+- auditoria contra chaves e sessões incluídas por engano;
+- artefato público higienizado;
+- build privada capaz de preservar configurações locais selecionadas;
+- ZIP root-ready, sem diretório externo envolvendo o projeto.
 
 ## Requisitos
 
 - Node.js 20 ou superior;
+- npm 9 ou superior;
 - Git;
-- conexão estável;
-- número de WhatsApp separado do uso pessoal;
-- conjunto de dependências compatível com esta base.
+- FFmpeg para recursos de áudio e vídeo;
+- número de WhatsApp dedicado ao bot;
+- chave NVIDIA para a assistente;
+- chave VEX para transcrição, quando o recurso for utilizado.
 
-> Não atualize Baileys ou pacotes centrais diretamente em produção. Primeiro valide em uma instalação de teste, porque dependência quebrada raramente manda aviso prévio por educação.
+## Instalação rápida
 
-## Instalação simplificada
-
-Escolha seu sistema, instale **Node.js 20 ou superior** e siga somente o bloco correspondente.
-
-### Windows — PowerShell
-
-```powershell
-git clone https://github.com/dgreych/nazuna9.0-com-automa-es.git
-cd nazuna9.0-com-automa-es
-Copy-Item .env.example .env.local
-npm ci
-npm start
-```
-
-### Linux — Debian, Ubuntu e derivados
+### Linux
 
 ```bash
 git clone https://github.com/dgreych/nazuna9.0-com-automa-es.git
@@ -187,7 +94,17 @@ npm ci
 npm start
 ```
 
-### Android — Termux
+### Windows PowerShell
+
+```powershell
+git clone https://github.com/dgreych/nazuna9.0-com-automa-es.git
+cd nazuna9.0-com-automa-es
+Copy-Item .env.example .env.local
+npm ci
+npm start
+```
+
+### Termux
 
 ```bash
 pkg update -y
@@ -199,42 +116,63 @@ npm ci
 npm start
 ```
 
-> Em hospedagens com `build.zip`, extraia os arquivos diretamente na raiz do contêiner. Não crie uma pasta envolvendo o projeto e não execute `npm install` quando `node_modules` já estiver incluído.
-
-A sessão do WhatsApp é armazenada localmente em:
-
-```text
-dados/database/qr-code/
-```
-
-Essa pasta é ignorada pelo Git e não entra nos artefatos públicos.
+> Execute os comandos dentro da pasta do projeto. O npm precisa encontrar `package.json` e `package-lock.json`, detalhe aparentemente pequeno até ele produzir três páginas de protesto.
 
 ## Configuração
 
-Copie o modelo de ambiente:
+Copie o arquivo de ambiente e preencha apenas na máquina ou no servidor:
 
-```bash
-cp -n .env.example .env.local
-chmod 600 .env.local
-```
-
-Preencha somente na máquina ou no servidor:
-
-```text
+```env
 NVIDIA_API_KEY=SUA_CHAVE_NVIDIA
 VEX_API_KEY=SUA_CHAVE_VEX
 VEX_SITE=https://vexapi.com.br
 ```
 
-Edite também:
+A variável `NVIDIA_API_KEY` tem prioridade sobre o campo legado `nvidia_api_key` do `config.json`.
+
+Complete também as configurações locais em:
 
 ```text
 dados/src/config.json
 ```
 
-O repositório público mantém apenas placeholders. Sessões, chaves, números administrativos, grupos e bancos gerados não devem ser versionados.
+Nunca publique:
 
-## Validação
+- `.env.local`;
+- sessão em `dados/database/qr-code/`;
+- chaves de API;
+- bancos pessoais, caches e arquivos de grupos reais;
+- números administrativos privados.
+
+## Testes da IA
+
+Carregue a chave apenas na sessão atual do terminal:
+
+```bash
+read -rsp "NVIDIA_API_KEY: " NVIDIA_API_KEY
+echo
+export NVIDIA_API_KEY
+```
+
+Teste o endpoint, a chave e o modelo:
+
+```bash
+npm run test:nvidia:live
+```
+
+Teste o fluxo completo da assistente, incluindo prompt, contexto, chamada NVIDIA e parser:
+
+```bash
+npm run test:assistant:live
+```
+
+Remova a variável ao terminar:
+
+```bash
+unset NVIDIA_API_KEY
+```
+
+## Validação do projeto
 
 ```bash
 npm run validate:ci
@@ -243,13 +181,79 @@ npm run validate:local
 npm run validate:deploy
 ```
 
-Para iniciar somente depois da validação local:
+Para validar antes de iniciar:
 
 ```bash
 npm run start:validated
 ```
 
-## Build própria para servidor
+## Comandos adicionados ou corrigidos
+
+### Apagar mensagem citada
+
+```text
+!d
+!del
+!delete
+!deletar
+```
+
+O bot precisa ser administrador do grupo. O usuário deve responder à mensagem que será apagada.
+
+### Transcrição
+
+```text
+!t
+!transc
+!transcrever
+!autotr
+!autotransc
+```
+
+### Recuperar mensagens apagadas
+
+```text
+!return1
+!return2
+!return3
+!return4
+!return5
+```
+
+Também é aceita a forma `!return 1`.
+
+### Mídias personalizadas
+
+```text
+!menumidia
+!setmidia menu
+!setmidia menubn
+!setmidia comando
+!delmidia comando
+```
+
+Use `setmidia` respondendo a uma imagem, vídeo ou GIF.
+
+### Donos adicionais
+
+```text
+!adddono 55DDDNUMERO
+!deldono 55DDDNUMERO
+!listdonos
+```
+
+### Prompts da assistente
+
+```text
+!prompts
+!verprompt gyomei
+!setprompt gyomei SEU TEXTO
+!resetprompt gyomei
+```
+
+As instruções personalizadas complementam o prompt protegido. Elas não substituem identidade, regras de segurança ou contrato de resposta.
+
+## Build para servidor
 
 ### Artefato público higienizado
 
@@ -257,7 +261,7 @@ npm run start:validated
 npm run build:server:artifact
 ```
 
-Gera:
+Arquivos gerados:
 
 ```text
 dist/nazuna-gyomei-server-v1.0.0/
@@ -265,90 +269,79 @@ dist/nazuna-gyomei-server-v1.0.0-root.zip
 dist/nazuna-gyomei-server-v1.0.0-root.tar.gz
 ```
 
-O conteúdo do ZIP e do TAR começa diretamente com:
+O ZIP começa diretamente com:
 
 ```text
 package.json
+package-lock.json
 dados/
 node_modules/
+deploy/
 ```
 
-Não existe uma pasta `nazuna-gyomei-server-v1.0.0/` envolvendo tudo dentro do arquivo. Assim, painéis que extraem no diretório do contêiner encontram o startup na raiz correta.
+Não existe uma pasta-mãe envolvendo o projeto. O arquivo pode ser extraído diretamente na raiz do contêiner.
 
-O artefato público contém:
-
-- placeholders de configuração;
-- nenhum `.env.local`;
-- nenhuma sessão do WhatsApp;
-- nenhum JSON de grupo;
-- nenhum banco pessoal ou estatística de uso;
-- nenhum segredo hardcoded.
-
-### Build privada com seus estados locais
-
-Depois de configurar e validar a instalação real:
+### Build privada
 
 ```bash
 npm run build:server
 ```
 
-A build privada pode incluir, por uma lista controlada:
+A build privada pode transportar, por lista controlada:
 
 - `config.json` e `.env.local` locais;
-- design, áudio e configurações de menu;
-- mídias associadas aos comandos;
+- design, áudio e opções de menu;
 - prompts e donos adicionais;
-- estados anti globais e por grupo;
-- modo lite, horários e mensagens automáticas.
+- mídias vinculadas a comandos;
+- configurações de antis e automações.
 
-Ela não inclui automaticamente sessão, logs, economia, usuários, cache JID/LID ou histórico Git.
+Sessão do WhatsApp, logs, caches e históricos pessoais continuam excluídos por padrão.
 
-Consulte [DEPLOY.md](DEPLOY.md) antes de enviar a build ao servidor.
+Leia [DEPLOY.md](DEPLOY.md) antes de substituir uma instalação em produção.
+
+## Créditos
+
+### Criação original
+
+**Hiudy (Hiduy)**
+
+- [WhatsApp](https://wa.me/553391967445)
+- [GitHub](https://github.com/hiudyy)
+- [Instagram](https://instagram.com/hiudyyy_)
+
+### Continuidade da Nazuna
+
+**DevTokyo**
+
+- [WhatsApp](https://wa.me/5532985076326)
+- [GitHub](https://github.com/DevTokyoVx)
+- [Repositório original](https://github.com/DevTokyoVx/nazuna)
+
+### Versão modificada GYOMEI
+
+**Alaska_dev / Maurício Almeida**
+
+- correções e compatibilidade;
+- personalidade e integração da assistente;
+- comandos e automações;
+- validações e empacotamento;
+- documentação e deploy.
+
+- [WhatsApp](https://wa.me/5522997028553)
+- [Repositório desta versão](https://github.com/dgreych/nazuna9.0-com-automa-es)
 
 ## Hospedagem
 
-<a href="https://wa.me/5522997028553?text=Ol%C3%A1%21%20Tenho%20interesse%20em%20hospedar%20a%20NAZUNA%20BOT%20-%20vers%C3%A3o%20GYOMEI%20a%20partir%20de%20R%24%2016%2C99%2Fm%C3%AAs.%20Pode%20me%20passar%20os%20detalhes%3F">
-  <img src="assets/hospedagem-gyomei.svg" alt="Hospede a NAZUNA BOT GYOMEI a partir de R$ 16,99 por mês" width="100%">
+<a href="https://wa.me/5522997028553?text=Ol%C3%A1%21%20Tenho%20interesse%20em%20hospedar%20a%20NAZUNA%20BOT%20-%20vers%C3%A3o%20GYOMEI.%20Pode%20me%20passar%20os%20detalhes%3F">
+  <img src="assets/hospedagem-gyomei.svg" alt="Hospedagem da NAZUNA BOT GYOMEI" width="100%">
 </a>
 
-**Hospede a partir de R$ 16,99/mês.**
+Atendimento a partir de **R$ 16,99/mês**.
 
-Atendimento direto pelo WhatsApp:
+## Direção futura
 
-**[Falar sobre hospedagem](https://wa.me/5522997028553)**
+A migração gradual de downloads e serviços externos para a **API Nodz** está descrita em [ROADMAP_NODZ.md](ROADMAP_NODZ.md). Integrações funcionais não devem ser removidas antes de uma substituição validada.
 
-## Teste de fumaça obrigatório
+## Responsabilidade
 
-Antes do primeiro deploy, teste no WhatsApp:
-
-1. `!criador`;
-2. um comando digitado incorretamente;
-3. menção à IA e resposta a uma mensagem do bot;
-4. `!t` respondendo a um áudio;
-5. `!autotr` em um grupo de teste;
-6. exclusão de uma mensagem e `!return1`;
-7. `!setmidia menubn` e depois `!menubn`;
-8. `!menumidia`, `!prompts` e `!listdonos`.
-
-Não faça deploy enquanto algum fluxo essencial estiver falhando.
-
-## Direção futura: API Nodz
-
-A meta arquitetural é concentrar downloads e outras funcionalidades externas na **API Nodz**.
-
-Essa migração será feita comando por comando, com adaptadores, validação de contratos e fallback temporário. Integrações funcionais não serão removidas antes de uma substituição comprovadamente estável.
-
-Consulte [ROADMAP_NODZ.md](ROADMAP_NODZ.md).
-
-## Segurança
-
-- nunca publique `.env.local`;
-- nunca versione a sessão do WhatsApp;
-- revogue qualquer chave que já tenha aparecido em repositório público;
-- mantenha `config.json` público apenas com placeholders;
-- use a build privada somente para transporte controlado ao seu servidor;
-- faça backup antes de atualizar uma instalação em produção.
-
-## Licença e responsabilidade
-
-Respeite a licença, os avisos e as condições do projeto original. Não use o bot para spam, invasão de privacidade, golpes ou atividades prejudiciais.
+Respeite a licença e os créditos do projeto original. Não utilize o bot para spam, invasão de privacidade, golpes ou outras atividades prejudiciais.
