@@ -1,6 +1,8 @@
+# Pipeline oficial da edição GYOMEI
 name: Validar e empacotar NAZUNA BOT - GYOMEI
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
