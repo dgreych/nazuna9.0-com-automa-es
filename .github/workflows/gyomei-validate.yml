@@ -39,6 +39,7 @@ jobs:
         run: |
           node --check dados/src/.scripts/envLoader.js
           node --check dados/src/.scripts/validate-local.js
+          node --check dados/src/.scripts/validate-nvidia.js
           node --check dados/src/.scripts/validate-release-output.js
           node --check dados/src/.scripts/audit-public.js
           node --check dados/src/.scripts/build-server.js
@@ -53,6 +54,9 @@ jobs:
 
       - name: Confirmar identidade, créditos e comandos
         run: |
+          grep -q '"validate:nvidia"' package.json
+          grep -q "makeCognimaRequest" dados/src/.scripts/validate-nvidia.js
+          grep -q "buildAssistantSystemPrompt" dados/src/.scripts/validate-nvidia.js
           grep -q "NAZUNA BOT" dados/src/.runtime-index.js
           grep -q "Versão modificada: \*GYOMEI\*" dados/src/.runtime-index.js
           grep -q "CRIAÇÃO ORIGINAL — HIUDY" dados/src/.runtime-index.js
@@ -67,6 +71,7 @@ jobs:
           grep -q "Buffer.from(value.data)" dados/src/utils/gyomeiStore.js
           grep -q "process.env.NVIDIA_API_KEY" dados/src/funcs/private/.runtime-ia.js
           ! grep -q "const IA_API_KEY = 'nvapi-" dados/src/funcs/private/.runtime-ia.js
+          ! grep -R -I -n -E 'nvapi-[A-Za-z0-9_-]+' dados/src/.scripts package.json .github/workflows
 
       - name: Gerar artefato público root-ready
         run: npm run build:server:artifact
