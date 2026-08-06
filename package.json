@@ -18,7 +18,9 @@
     "config:install": "node dados/src/.scripts/config.js --install",
     "update": "node dados/src/.scripts/update.js",
     "test:regressions": "node dados/src/.scripts/test-regressions.js",
-    "diagnose:nvidia": "node dados/src/.scripts/diagnose-nvidia.js"
+    "diagnose:nvidia": "node dados/src/.scripts/diagnose-nvidia.js",
+    "test:nvidia:live": "node dados/src/.scripts/diagnose-nvidia.js",
+    "test:assistant:live": "node dados/src/.scripts/test-assistant-live.js"
   },
   "repository": {
     "type": "git",

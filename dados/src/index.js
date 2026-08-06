@@ -17,6 +17,7 @@ import { fileURLToPath } from 'url';
 import { PerformanceOptimizer, getPerformanceOptimizer } from './utils/performanceOptimizer.js';
 import { recalcEquipmentBonuses } from './utils/equipment.js';
 import * as ia from './funcs/private/ia.js';
+import { getQuotedContextInfo, loadSafeCommandAliases, resolveCommandInput } from './utils/commandResolver.js';
 import * as vipCommandsManager from './utils/vipCommandsManager.js';
 import { getInfo as gdriveGetInfo } from './funcs/utils/gdrive.js';
 import { getInfo as mediafireGetInfo } from './funcs/utils/mediafire.js';
@@ -1931,8 +1932,10 @@ async function NazuninhaBotExec(nazu, info, store, messagesCache, rentalExpirati
     // Suporte para "! comando" (com espaço após o prefixo)
     const bodyWithoutPrefix = body.trim().slice(groupPrefix.length).trimStart();
     
-    const aliases = loadCommandAliases();
-    const matchedAlias = aliases.find(item => normalizar(bodyWithoutPrefix.split(/ +/).shift().trim()) === item.alias);
+    const aliases = loadSafeCommandAliases();
+    const rawCommandToken = bodyWithoutPrefix.split(/ +/).shift().trim();
+    const commandResolution = resolveCommandInput(rawCommandToken, aliases);
+    const matchedAlias = commandResolution.matchedAlias;
     
     // Se encontrou um alias, aplicar parâmetros fixos
     if (matchedAlias && matchedAlias.fixedParams) {
@@ -1943,7 +1946,7 @@ async function NazuninhaBotExec(nazu, info, store, messagesCache, rentalExpirati
       args.push(...combinedParams.split(/ +/));
     }
     
-    var command = isCmd ? matchedAlias ? matchedAlias.command : normalizar(bodyWithoutPrefix.split(/ +/).shift().trim()).replace(/\s+/g, '') : null;
+    var command = isCmd ? commandResolution.command : null;
     
     // Recalcular args usando bodyWithoutPrefix para suportar "! comando" (com espaço)
     if (isCmd && !matchedAlias) {
@@ -4592,6 +4595,9 @@ Código: *${roleCode}*`,
     }
       };
       processResponses(0);
+    } else if (respAssist?.message) {
+      console.warn(`⚠️ [${personality}] A IA falhou sem respostas válidas:`, respAssist.erro || 'erro desconhecido');
+      reply(respAssist.message);
     } else {
       console.warn(`⚠️ [${personality}] Nenhuma resposta válida retornada pela IA. respAssist.resp:`, respAssist.resp);
     }
@@ -24829,30 +24835,47 @@ case 'mention':
 case 'deletar':
 case 'delete':
 case 'del':
-case 'd':
-    if  (!isGroupAdmin) return reply("Comando restrito a Administradores ou Moderadores com permissão. 💔");
-    if  (!menc_prt) return reply("Marque uma mensagem.");
-    let stanzaId, participant;
-    if  (info.message.extendedTextMessage) {
-    stanzaId = info.message.extendedTextMessage.contextInfo.stanzaId;
-    participant = info.message.extendedTextMessage.contextInfo.participant || menc_prt;
-    } else if (info.message.viewOnceMessage) {
-    stanzaId = info.key.id;
-    participant = info.key.participant || menc_prt;
+case 'd': {
+    if (!isGroup) return reply('❌ O comando de apagar mensagens só funciona em grupos.');
+    if (!isGroupAdmin) return reply('🚫 Comando restrito a administradores ou moderadores autorizados.');
+
+    const quotedContextInfo = getQuotedContextInfo(info.message);
+    const stanzaId = quotedContextInfo?.stanzaId;
+    const participant = quotedContextInfo?.participant || menc_prt || null;
+
+    if (!stanzaId) {
+      return reply(`↩️ Responda à mensagem que deseja apagar e use *${groupPrefix}d*.`);
     }
-  try  {
-    await nazu.sendMessage(from, {
-      delete: {
-    remoteJid: from,
-    fromMe: false,
-    id: stanzaId,
-    participant: participant
-      }
-    });
+
+    const participantIsBot = participant
+      ? [nazu.user?.id, nazu.user?.lid, botNumber, botNumberLid]
+        .filter(Boolean)
+        .some(botId => idsMatch(botId, participant))
+      : false;
+
+    if (!participantIsBot && !isBotAdmin) {
+      return reply('⚠️ Preciso ser administrador do grupo para apagar mensagens de outras pessoas.');
+    }
+
+    try {
+      const deleteKey = {
+        remoteJid: from,
+        fromMe: participantIsBot,
+        id: stanzaId
+      };
+      if (participant && !participantIsBot) deleteKey.participant = participant;
+
+      await nazu.sendMessage(from, { delete: deleteKey });
     } catch (error) {
-    reply("ocorreu um erro 💔");
+      console.error('[DELETE] Falha ao apagar mensagem:', {
+        message: error.message,
+        stanzaId,
+        participant
+      });
+      await reply('❌ Não consegui apagar essa mensagem. Verifique se ainda sou administrador e tente novamente.');
     }
        break;
+}
 case 'blockuser':
     if  (!isGroup) return reply("isso so pode ser usado em grupo 💔");
     if  (!isGroupAdmin) return reply("você precisa ser adm 💔");

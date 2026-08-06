@@ -6,6 +6,9 @@ import path from 'node:path';
 
 import { getQuotedContextInfo, loadSafeCommandAliases, normalizeCommandAliases, resolveCommandInput } from '../utils/commandResolver.js';
 import { requestNvidiaChat } from '../utils/nvidiaApi.js';
+import { extractJSON } from '../funcs/private/ia.js';
+import { getQuotedMediaSource } from '../utils/gyomeiCore.js';
+import { normalizeVipCommandsData } from '../utils/vipCommandsManager.js';
 
 const results = [];
 async function test(name, fn) {
@@ -74,6 +77,53 @@ await test('fontes usam Llama 3.1 70B sem depender de patch no startup', () => {
   assert.ok(indexSource.includes('meta/llama-3.1-70b-instruct'));
   assert.ok(!iaSource.includes('moonshotai/kimi-k2-instruct'));
   assert.ok(!indexSource.includes('moonshotai/kimi-k2-instruct'));
+});
+
+
+await test('fonte principal já contém as correções críticas, sem depender da runtime', () => {
+  const iaSource = fs.readFileSync(new URL('../funcs/private/ia.js', import.meta.url), 'utf8');
+  const indexSource = fs.readFileSync(new URL('../index.js', import.meta.url), 'utf8');
+  const prepareSource = fs.readFileSync(new URL('./prepareRuntimeSources.js', import.meta.url), 'utf8');
+
+  assert.ok(iaSource.includes('requestNvidiaChat'));
+  assert.ok(iaSource.includes('makeNvidiaRequest'));
+  assert.ok(!iaSource.includes("import axios from 'axios'"));
+  assert.ok(!iaSource.includes('Erro na API Cognima'));
+  assert.ok(!iaSource.includes('Resposta da API Cognima'));
+  assert.ok(indexSource.includes('loadSafeCommandAliases'));
+  assert.ok(indexSource.includes("case 'd': {"));
+  assert.ok(indexSource.includes('getQuotedContextInfo(info.message)'));
+  assert.ok(!prepareSource.includes("replaceAll('moonshotai/kimi-k2-instruct'"));
+});
+
+await test('resposta textual da NVIDIA é normalizada sem perder conteúdo', () => {
+  assert.deepEqual(extractJSON('FLUXO NAZUNA OK'), {
+    resp: [{ resp: 'FLUXO NAZUNA OK' }]
+  });
+});
+
+await test('comandos VIP normalizam bancos vazios e formatos antigos', () => {
+  const empty = normalizeVipCommandsData({});
+  assert.deepEqual(empty.commands, []);
+  assert.ok(empty.categories.ia);
+
+  const legacy = normalizeVipCommandsData([{ command: 'play', enabled: true }]);
+  assert.equal(legacy.commands.length, 1);
+  assert.equal(legacy.commands[0].command, 'play');
+});
+
+await test('setmidia reconhece imagem e GIF citados', () => {
+  const image = { url: 'imagem', mediaKey: Buffer.from('x') };
+  const gif = { url: 'video', mediaKey: Buffer.from('y'), gifPlayback: true };
+
+  assert.deepEqual(
+    getQuotedMediaSource({ extendedTextMessage: { contextInfo: { quotedMessage: { imageMessage: image } } } }),
+    { message: image, type: 'image', gifPlayback: false }
+  );
+  assert.deepEqual(
+    getQuotedMediaSource({ extendedTextMessage: { contextInfo: { quotedMessage: { videoMessage: gif } } } }),
+    { message: gif, type: 'video', gifPlayback: true }
+  );
 });
 
 await test('HTTP 410 da NVIDIA não é repetido três vezes', async () => {

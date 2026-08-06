@@ -1,13 +1,19 @@
-import axios from 'axios';
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 import userContextDB from '../../utils/userContextDB.js';
+import * as automacoesV9 from '../../utils/gyomeiRuntime.js';
+import { DEFAULT_NVIDIA_MODEL, requestNvidiaChat } from '../../utils/nvidiaApi.js';
 
-// Chave de IA hardcoded
-const IA_API_KEY = String(process.env.NVIDIA_API_KEY || '').trim();
+function getNvidiaApiKey() {
+  return String(
+    process.env.NVIDIA_API_KEY
+    || automacoesV9.getConfig()?.nvidia_api_key
+    || ''
+  ).trim();
+}
 
 // Função para obter data/hora no fuso horário do Brasil (GMT-3)
 function getBrazilDateTime() {
@@ -1371,72 +1377,28 @@ Usuário: "muta esse maluco" (com tem_mencao=true)
 - Quando tem_mencao=true, comandos que precisam de @ NÃO precisam de falta
 `;
 
-async function makeCognimaRequest(modelo, texto, systemPrompt = null, historico = [], retries = 3) {
-  if (!modelo || !texto) {
-    throw new Error('Parâmetros obrigatórios ausentes: modelo e texto');
+async function makeNvidiaRequest(modelo, texto, systemPrompt = null, historico = [], retries = 3) {
+  if (!texto) {
+    throw new Error('Parâmetro obrigatório ausente: texto');
   }
-
-  // Note: parametro `key` é ignorado; usar `IA_API_KEY` hardcoded definido no topo.
 
   const messages = [];
-  
-  if (systemPrompt) {
-    messages.push({ role: 'system', content: systemPrompt });
-  }
-  
-  if (historico && historico.length > 0) {
-    messages.push(...historico);
-  }
-  
+  if (systemPrompt) messages.push({ role: 'system', content: systemPrompt });
+  if (Array.isArray(historico) && historico.length > 0) messages.push(...historico);
   messages.push({ role: 'user', content: texto });
 
-  for (let attempt = 0; attempt < retries; attempt++) {
-    try {
-      // Usar API da NVIDIA diretamente
-      const response = await axios.post(
-        'https://integrate.api.nvidia.com/v1/chat/completions',
-        {
-          messages,
-          model: modelo,
-          temperature: 0.7,
-          max_tokens: 2000
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${IA_API_KEY}`
-          },
-          timeout: 120000
-        }
-      );
-
-      if (!response.data || !response.data.choices || !response.data.choices[0]) {
-        throw new Error('Resposta da API inválida');
-      }
-
-      // sucesso — sem checagem de API key centralizada
-      
-      // Formatar resposta para manter compatibilidade
-      return {
-        success: true,
-        data: response.data
-      };
-
-    } catch (error) {
-      console.warn(`Tentativa ${attempt + 1} falhou:`, {
-        status: error.response?.status,
-        message: error.response?.data?.message || error.message
-      });
-
-      // retry handling — sem marcar status de API key
-      if (attempt === retries - 1) {
-        throw new Error(`Falha na requisição após ${retries} tentativas: ${error.response?.data?.message || error.message}`);
-      }
-
-      await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
-    }
-  }
+  return requestNvidiaChat({
+    apiKey: getNvidiaApiKey(),
+    model: modelo || DEFAULT_NVIDIA_MODEL,
+    messages,
+    temperature: 0.7,
+    maxTokens: 2000,
+    retries
+  });
 }
+
+// Compatibilidade temporária com comandos legados que ainda usam o nome antigo.
+const makeCognimaRequest = makeNvidiaRequest;
 
 function cleanWhatsAppFormatting(texto) {
   if (!texto || typeof texto !== 'string') return texto;
@@ -1505,11 +1467,16 @@ function extractJSON(content) {
     }
   }
 
-  console.error('❌ Não foi possível extrair JSON válido da resposta.');
-  console.error('Conteúdo recebido (primeiros 200 chars):', content.substring(0, 200) + '...');
-  
-  // Retornar o conteúdo limpo como resposta de fallback
-  return { resp: [{ resp: cleanWhatsAppFormatting(cleanContent) || "Não entendi a resposta, pode tentar de novo?" }] };
+  const fallbackText = cleanWhatsAppFormatting(cleanContent);
+  const lookedLikeJson = /^[\[{]/.test(cleanContent);
+
+  if (lookedLikeJson) {
+    console.warn('⚠️ A NVIDIA retornou JSON malformado; usando o conteúdo textual como fallback.');
+  } else {
+    console.log('ℹ️ Resposta textual recebida; normalizando para o formato interno da assistente.');
+  }
+
+  return { resp: [{ resp: fallbackText || 'Não entendi a resposta, pode tentar de novo?' }] };
 }
 
 function validateMessage(msg) {
@@ -1848,7 +1815,7 @@ async function processUserMessages(data, nazu = null, ownerNumber = null, person
       let result;
       try {
         // Chamada única para processamento com contexto
-        const response = (await makeCognimaRequest(
+        const response = (await makeNvidiaRequest(
           'meta/llama-3.1-70b-instruct',
           JSON.stringify(userInput),
           selectedPrompt,
@@ -1856,7 +1823,7 @@ async function processUserMessages(data, nazu = null, ownerNumber = null, person
         )).data;
 
         if (!response || !response.choices || !response.choices[0]) {
-          throw new Error("Resposta da API Cognima foi inválida ou vazia.");
+          throw new Error("Resposta da API NVIDIA foi inválida ou vazia.");
         }
 
         const content = response.choices[0].message.content;
@@ -1964,12 +1931,17 @@ async function processUserMessages(data, nazu = null, ownerNumber = null, person
           }
         }
       } catch (apiError) {
-        console.error('Erro na API Cognima:', apiError.message);
-        
+        console.error('[NVIDIA] Erro na assistente:', {
+          code: apiError.code,
+          status: apiError.status,
+          message: apiError.message
+        });
+
         return {
           resp: [],
-          erro: 'Erro temporário',
-          message: '🌙 *Ops! Algo deu errado aqui...*\n\n😢 N-Não sei bem o que aconteceu... tô meio confusa agora.\n\n⏰ Tenta de novo em um pouquinho?'
+          erro: apiError.code || 'NVIDIA_REQUEST_FAILED',
+          status: apiError.status || null,
+          message: apiError.userMessage || '🤖 A assistente está temporariamente indisponível. Tente novamente em alguns instantes.'
         };
       }
     }
@@ -3104,7 +3076,9 @@ function getNazunaResponseDelay(grupoUserId) {
 
 export {
   processUserMessages as makeAssistentRequest,
+  makeNvidiaRequest,
   makeCognimaRequest,
+  extractJSON,
   getHistoricoStats,
   clearOldHistorico,
   getApiKeyStatus,

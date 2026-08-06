@@ -135,8 +135,8 @@ function patchRuntimeIa(source) {
 
   output = replacePatternRequired(
     output,
-    /async function makeCognimaRequest\(modelo, texto, systemPrompt = null, historico = \[\], retries = 3\) \{[\s\S]*?\n\}\n\nfunction cleanWhatsAppFormatting/,
-    `async function makeCognimaRequest(modelo, texto, systemPrompt = null, historico = [], retries = 3) {
+    /async function (?:makeCognimaRequest|makeNvidiaRequest)\(modelo, texto, systemPrompt = null, historico = \[\], retries = 3\) \{[\s\S]*?\n\}(?:\n\n\/\/ Compatibilidade temporária[\s\S]*?const makeCognimaRequest = makeNvidiaRequest;)?\n\nfunction cleanWhatsAppFormatting/,
+    `async function makeNvidiaRequest(modelo, texto, systemPrompt = null, historico = [], retries = 3) {
   if (!texto) {
     throw new Error('Parâmetro obrigatório ausente: texto');
   }
@@ -157,6 +157,9 @@ function patchRuntimeIa(source) {
   });
 }
 
+// Compatibilidade temporária com comandos legados que ainda usam o nome antigo.
+const makeCognimaRequest = makeNvidiaRequest;
+
 function cleanWhatsAppFormatting`,
     'requisição NVIDIA com política correta de repetição'
   );
@@ -166,12 +169,14 @@ function cleanWhatsAppFormatting`,
     'throw new Error("Resposta da API NVIDIA foi inválida ou vazia.");'
   );
 
-  output = replaceRequired(
-    output,
-    `        console.error('Erro na API Cognima:', apiError.message);`,
-    `        console.error('[NVIDIA] Erro na assistente:', { code: apiError.code, status: apiError.status, message: apiError.message });`,
-    'identificação correta da API nos logs'
-  );
+  if (!output.includes("[NVIDIA] Erro na assistente:")) {
+    output = replaceRequired(
+      output,
+      `        console.error('Erro na API Cognima:', apiError.message);`,
+      `        console.error('[NVIDIA] Erro na assistente:', { code: apiError.code, status: apiError.status, message: apiError.message });`,
+      'identificação correta da API nos logs'
+    );
+  }
 
   output = replacePatternRequired(
     output,
