@@ -21,7 +21,6 @@ const manifestFile = path.join(bundleDir, 'DEPLOY-MANIFEST.json');
 const SERVER_UNWANTED_PATHS = [
   '.github',
   '.gitignore',
-  'assets',
   'AUTOMACOES_V9.md',
   'ROADMAP_NODZ.md',
   'nazuna-main.zip',
@@ -97,7 +96,7 @@ if (fs.existsSync(manifestFile)) {
   manifest.notes = Array.isArray(manifest.notes) ? manifest.notes : [];
   manifest.notes.push(
     'Os arquivos são compactados a partir da raiz interna da build, sem pasta externa adicional.',
-    'Workflows, logs, documentação visual e arquivos compactados internos foram excluídos do pacote de execução.',
+    'Workflows, logs e arquivos compactados internos foram excluídos; o banner oficial foi preservado no pacote.',
     publicMode
       ? 'Grupos, sessão, bancos pessoais e credenciais foram removidos do artefato público.'
       : 'Os campos contador dos grupos foram removidos; antis e estados de moderação foram preservados.'
