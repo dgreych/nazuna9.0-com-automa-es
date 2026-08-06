@@ -66,6 +66,16 @@ await test('contexto de mensagem citada é reconhecido em texto e mídia', () =>
   }), wrappedContext);
 });
 
+
+await test('fontes usam Llama 3.1 70B sem depender de patch no startup', () => {
+  const iaSource = fs.readFileSync(new URL('../funcs/private/ia.js', import.meta.url), 'utf8');
+  const indexSource = fs.readFileSync(new URL('../index.js', import.meta.url), 'utf8');
+  assert.ok(iaSource.includes('meta/llama-3.1-70b-instruct'));
+  assert.ok(indexSource.includes('meta/llama-3.1-70b-instruct'));
+  assert.ok(!iaSource.includes('moonshotai/kimi-k2-instruct'));
+  assert.ok(!indexSource.includes('moonshotai/kimi-k2-instruct'));
+});
+
 await test('HTTP 410 da NVIDIA não é repetido três vezes', async () => {
   let calls = 0;
   const httpClient = {
