@@ -48,13 +48,30 @@ jobs:
           node --check dados/src/.scripts/prepareRuntimeSources.js
           node --check dados/src/.scripts/finalizeGyomeiRuntime.js
           node --check dados/src/.scripts/start-v9.js
+          node --check dados/src/.scripts/start-v9-fixed.js
+          node --check dados/src/.scripts/applyCriticalRuntimeFixes.js
+          node --check dados/src/.scripts/test-regressions.js
+          node --check dados/src/.scripts/test-assistant-live.js
+          node --check dados/src/.scripts/diagnose-nvidia.js
           node --check dados/src/utils/gyomeiStore.js
+          node --check dados/src/utils/nvidiaApi.js
+          node --check dados/src/utils/commandResolver.js
+          node --check dados/src/utils/vipCommandsManager.js
+          node --check dados/src/funcs/private/ia.js
+          node --check dados/src/index.js
 
       - name: Executar validação equivalente ao ambiente público
         run: npm run validate:ci
 
-      - name: Confirmar identidade, créditos e comandos
+      - name: Confirmar NVIDIA, identidade, créditos e comandos
         run: |
+          grep -q "meta/llama-3.1-70b-instruct" dados/src/funcs/private/ia.js
+          grep -q "https://integrate.api.nvidia.com/v1/chat/completions" dados/src/utils/nvidiaApi.js
+          ! grep -q "moonshotai/kimi-k2-instruct" dados/src/funcs/private/ia.js
+          ! grep -q "moonshotai/kimi-k2-instruct" dados/src/index.js
+          grep -q "test:nvidia:live" package.json
+          grep -q "test:assistant:live" package.json
+          test -s assets/nazuna-gyomei-banner.jpg
           grep -q "NAZUNA BOT" dados/src/.runtime-index.js
           grep -q "Versão modificada: \*GYOMEI\*" dados/src/.runtime-index.js
           grep -q "CRIAÇÃO ORIGINAL — HIUDY" dados/src/.runtime-index.js
@@ -77,6 +94,9 @@ jobs:
         run: |
           BUNDLE=dist/nazuna-gyomei-server-v1.0.0
           test -f "$BUNDLE/package.json"
+          test -f "$BUNDLE/package-lock.json"
+          test -f "$BUNDLE/README.md"
+          test -f "$BUNDLE/assets/nazuna-gyomei-banner.jpg"
           test -d "$BUNDLE/dados"
           test -d "$BUNDLE/node_modules"
           test -f "$BUNDLE/DEPLOY-MANIFEST.json"
