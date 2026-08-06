@@ -79,7 +79,7 @@ await test('HTTP 410 da NVIDIA não é repetido três vezes', async () => {
 
   await assert.rejects(
     requestNvidiaChat({
-      apiKey: 'nvapi-test',
+      apiKey: 'test-key',
       messages: [{ role: 'user', content: 'teste' }],
       retries: 3,
       httpClient,
@@ -105,7 +105,7 @@ await test('falha transitória da NVIDIA é repetida e pode recuperar', async ()
   };
 
   const response = await requestNvidiaChat({
-    apiKey: 'nvapi-test',
+    apiKey: 'test-key',
     messages: [{ role: 'user', content: 'teste' }],
     retries: 3,
     httpClient,
