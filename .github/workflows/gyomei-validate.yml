@@ -1,0 +1,118 @@
+name: Validar e empacotar NAZUNA BOT - GYOMEI
+
+on:
+  push:
+    branches:
+      - main
+      - feat/automacoes-v9
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validar-e-empacotar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@v4
+
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Instalar dependências sem usar node_modules versionado
+        run: npm ci --omit=dev --no-audit --no-fund
+
+      - name: Confirmar ferramentas de compactação
+        run: |
+          tar --version
+          zip -v | head -n 2
+
+      - name: Validar scripts e módulos alterados
+        run: |
+          node --check dados/src/.scripts/envLoader.js
+          node --check dados/src/.scripts/validate-local.js
+          node --check dados/src/.scripts/validate-release-output.js
+          node --check dados/src/.scripts/audit-public.js
+          node --check dados/src/.scripts/build-server.js
+          node --check dados/src/.scripts/sanitize-server-build.js
+          node --check dados/src/.scripts/prepareRuntimeSources.js
+          node --check dados/src/.scripts/finalizeGyomeiRuntime.js
+          node --check dados/src/.scripts/start-v9.js
+          node --check dados/src/utils/gyomeiStore.js
+
+      - name: Executar validação equivalente ao ambiente público
+        run: npm run validate:ci
+
+      - name: Confirmar identidade, créditos e comandos
+        run: |
+          grep -q "NAZUNA BOT" dados/src/.runtime-index.js
+          grep -q "Versão modificada: \*GYOMEI\*" dados/src/.runtime-index.js
+          grep -q "CRIAÇÃO ORIGINAL — HIUDY" dados/src/.runtime-index.js
+          grep -q "CONTINUIDADE DA NAZUNA — DEVTOKYO" dados/src/.runtime-index.js
+          grep -q "APRIMORAMENTOS DA VERSÃO GYOMEI" dados/src/.runtime-index.js
+          grep -q "wa.me/5532985076326" dados/src/.runtime-index.js
+          grep -q "github.com/dgreych/nazuna9.0-com-automa-es" dados/src/.runtime-index.js
+          grep -q "NAZUNA BOT — versão modificada GYOMEI" dados/src/.scripts/.runtime-start.js
+          grep -q "Comando não reconhecido" dados/src/.runtime-index.js
+          grep -q "Talvez você procurasse" dados/src/.runtime-index.js
+          grep -q "downloadQuotedCommandMedia" dados/src/.runtime-index.js
+          grep -q "Buffer.from(value.data)" dados/src/utils/gyomeiStore.js
+          grep -q "process.env.NVIDIA_API_KEY" dados/src/funcs/private/.runtime-ia.js
+          ! grep -q "const IA_API_KEY = 'nvapi-" dados/src/funcs/private/.runtime-ia.js
+
+      - name: Gerar artefato público root-ready
+        run: npm run build:server:artifact
+
+      - name: Validar layout e higienização do artefato
+        run: |
+          BUNDLE=dist/nazuna-gyomei-server-v1.0.0
+          test -f "$BUNDLE/package.json"
+          test -d "$BUNDLE/dados"
+          test -d "$BUNDLE/node_modules"
+          test -f "$BUNDLE/DEPLOY-MANIFEST.json"
+          test -f dist/nazuna-gyomei-server-v1.0.0-root.tar.gz
+          test -f dist/nazuna-gyomei-server-v1.0.0-root.zip
+          ! test -e "$BUNDLE/.env.local"
+          ! test -d "$BUNDLE/dados/database/qr-code"
+          ! test -d "$BUNDLE/dados/database/grupos"
+          ! test -d "$BUNDLE/dados/logs"
+          ! test -d "$BUNDLE/.github"
+          ! test -e "$BUNDLE/nazuna-main.zip"
+          ! find "$BUNDLE" -maxdepth 1 -type f \( -name '*.zip' -o -name '*.tar' -o -name '*.tar.gz' -o -name '*.tgz' \) | grep -q .
+          tar -tzf dist/nazuna-gyomei-server-v1.0.0-root.tar.gz | grep -q '^\./package.json$'
+          tar -tzf dist/nazuna-gyomei-server-v1.0.0-root.tar.gz | grep -q '^\./node_modules/'
+          ! tar -tzf dist/nazuna-gyomei-server-v1.0.0-root.tar.gz | grep -q '^nazuna-gyomei-server-v1.0.0/'
+          unzip -Z1 dist/nazuna-gyomei-server-v1.0.0-root.zip | grep -q '^package.json$'
+          unzip -Z1 dist/nazuna-gyomei-server-v1.0.0-root.zip | grep -q '^node_modules/'
+          ! unzip -Z1 dist/nazuna-gyomei-server-v1.0.0-root.zip | grep -q '^nazuna-gyomei-server-v1.0.0/'
+          ! unzip -Z1 dist/nazuna-gyomei-server-v1.0.0-root.zip | grep -q '^nazuna-main.zip$'
+          ! grep -R -I -n -E 'nvapi-[A-Za-z0-9_-]+' "$BUNDLE"
+
+      - name: Publicar conteúdo root-ready
+        uses: actions/upload-artifact@v4
+        with:
+          name: nazuna-gyomei-server-v1.0.0-root
+          path: |
+            dist/nazuna-gyomei-server-v1.0.0/**
+            dist/nazuna-gyomei-server-v1.0.0/.env.example
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publicar ZIP e TAR root-ready
+        uses: actions/upload-artifact@v4
+        with:
+          name: nazuna-gyomei-server-v1.0.0-arquivos
+          path: |
+            dist/nazuna-gyomei-server-v1.0.0-root.zip
+            dist/nazuna-gyomei-server-v1.0.0-root.tar.gz
+          if-no-files-found: error
+          retention-days: 14
