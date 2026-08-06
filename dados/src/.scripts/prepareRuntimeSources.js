@@ -408,7 +408,7 @@ function patchMenubnSource(source) {
   return replaceRequired(
     source,
     `    return menuContent;`,
-    `    menuContent = menuContent\n      .split('\\n')\n      .filter(line => !line.toLowerCase().includes(\`${prefix}nazista\`))\n      .join('\\n');\n    return menuContent;`,
+    `    menuContent = menuContent\n      .split('\\n')\n      .filter(line => !line.toLowerCase().includes(\`\${prefix}nazista\`))\n      .join('\\n');\n    return menuContent;`,
     'remoção do comando ofensivo do menubn'
   );
 }
@@ -423,8 +423,8 @@ function patchStartSource(source) {
   );
   output = replaceRequired(
     output,
-    `    \`${colors.bold}🚀 Nazuna - Conexão WhatsApp${colors.reset}\`,\n    \`${colors.bold}📦 Versão: ${version}${colors.reset}\`,`,
-    `    \`${colors.bold}🪨 GYOMEI — O guardião despertou${colors.reset}\`,\n    \`${colors.bold}🙏 Força, serenidade e disciplina em cada mensagem${colors.reset}\`,\n    \`${colors.bold}📦 Base Nazuna: ${version}${colors.reset}\`,`,
+    `    \`\${colors.bold}🚀 Nazuna - Conexão WhatsApp\${colors.reset}\`,\n    \`\${colors.bold}📦 Versão: \${version}\${colors.reset}\`,`,
+    `    \`\${colors.bold}🪨 GYOMEI — O guardião despertou\${colors.reset}\`,\n    \`\${colors.bold}🙏 Força, serenidade e disciplina em cada mensagem\${colors.reset}\`,\n    \`\${colors.bold}📦 Base Nazuna: \${version}\${colors.reset}\`,`,
     'cabeçalho de inicialização do Gyomei'
   );
   output = output.replace('🛑 Encerrando o Nazuna... Até logo!', '🛑 GYOMEI recolhe suas contas de oração. Encerrando com segurança...');
