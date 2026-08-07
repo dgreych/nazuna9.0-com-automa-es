@@ -70,11 +70,11 @@ await test('contexto de mensagem citada é reconhecido em texto e mídia', () =>
 });
 
 
-await test('fontes usam Llama 3.1 70B sem depender de patch no startup', () => {
+await test('fontes usam o modelo NVIDIA padrão (3.3) sem depender de patch no startup', () => {
   const iaSource = fs.readFileSync(new URL('../funcs/private/ia.js', import.meta.url), 'utf8');
   const indexSource = fs.readFileSync(new URL('../index.js', import.meta.url), 'utf8');
-  assert.ok(iaSource.includes('meta/llama-3.1-70b-instruct'));
-  assert.ok(indexSource.includes('meta/llama-3.1-70b-instruct'));
+  assert.ok(iaSource.includes('meta/llama-3.3-70b-instruct') || iaSource.includes('DEFAULT_NVIDIA_MODEL'));
+  assert.ok(indexSource.includes('meta/llama-3.3-70b-instruct') || indexSource.includes('DEFAULT_NVIDIA_MODEL'));
   assert.ok(!iaSource.includes('moonshotai/kimi-k2-instruct'));
   assert.ok(!indexSource.includes('moonshotai/kimi-k2-instruct'));
 });

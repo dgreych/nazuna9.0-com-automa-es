@@ -127,6 +127,7 @@ function patchRuntimeIa(source) {
   return String(
     process.env.NVIDIA_API_KEY
     || automacoesV9.getConfig()?.nvidia_api_key
+    || resolveEmbeddedNvidiaKey()
     || ''
   ).trim();
 }`,

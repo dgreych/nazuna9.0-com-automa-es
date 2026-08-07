@@ -1,7 +1,32 @@
 import axios from 'axios';
 
 export const NVIDIA_CHAT_ENDPOINT = 'https://integrate.api.nvidia.com/v1/chat/completions';
-export const DEFAULT_NVIDIA_MODEL = 'meta/llama-3.1-70b-instruct';
+export const DEFAULT_NVIDIA_MODEL = 'meta/llama-3.3-70b-instruct';
+
+// Modelos gratuitos da NVIDIA selecionados para a tarefa de assistente em
+// grupos (boa aderência a instrução, JSON estável, latência aceitável para
+// WhatsApp). Donos escolhem entre eles com "!modeloia".
+export const NVIDIA_MODEL_CATALOG = [
+  {
+    id: 'meta/llama-3.3-70b-instruct',
+    label: 'Llama 3.3 70B (padrão)',
+    description: 'Modelo principal da GYOMEI: multilíngue, bom em português e no contrato JSON.'
+  },
+  {
+    id: 'nvidia/llama-3.1-nemotron-70b-instruct',
+    label: 'Nemotron 70B',
+    description: 'Ajustado pela própria NVIDIA para seguir instruções e ser mais prestativo.'
+  },
+  {
+    id: 'mistralai/mistral-large-2-instruct',
+    label: 'Mistral Large 2',
+    description: 'Alternativa multilíngue de outro provedor, útil se a família Llama tiver instabilidade.'
+  }
+];
+
+export function isKnownNvidiaModel(modelId) {
+  return NVIDIA_MODEL_CATALOG.some(entry => entry.id === modelId);
+}
 
 export class NvidiaApiError extends Error {
   constructor(message, options = {}) {

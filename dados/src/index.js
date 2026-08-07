@@ -17,6 +17,7 @@ import { fileURLToPath } from 'url';
 import { PerformanceOptimizer, getPerformanceOptimizer } from './utils/performanceOptimizer.js';
 import { recalcEquipmentBonuses } from './utils/equipment.js';
 import * as ia from './funcs/private/ia.js';
+import { NVIDIA_MODEL_CATALOG, isKnownNvidiaModel, DEFAULT_NVIDIA_MODEL } from './utils/nvidiaApi.js';
 import { getQuotedContextInfo, loadSafeCommandAliases, resolveCommandInput } from './utils/commandResolver.js';
 import * as vipCommandsManager from './utils/vipCommandsManager.js';
 import { getInfo as gdriveGetInfo } from './funcs/utils/gdrive.js';
@@ -4142,7 +4143,7 @@ Código: *${roleCode}*`,
     if  (antitoxic && antitoxic.isEnabled && antitoxic.isEnabled(from) && body && ia) {
     // Função wrapper para a IA do antitoxic
     const aiFunction = (prompt) => {
-      return ia.makeCognimaRequest('meta/llama-3.1-70b-instruct', prompt, null)
+      return ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, prompt, null)
     .then(response => response?.data?.choices?.[0]?.message?.content || '');
     };
     
@@ -12877,7 +12878,7 @@ case 'kimik2':
     if  (!q) return reply(`🤔 Qual sua dúvida para o Kimi? Informe a pergunta após o comando! Exemplo: ${prefix}${command} quem descobriu o Brasil? 🌍`);
     
     reply(`⏳ Só um segundinho, estou consultando o Kimi... ✨`).then(() => {
-    ia.makeCognimaRequest('meta/llama-3.1-70b-instruct', q, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API Kimi:', e);
@@ -15569,7 +15570,7 @@ case 'dictionary':
             const prompt = `Defina a palavra "${palavra}" em português de forma completa e fofa. Inclua a classe gramatical, os principais significados e um exemplo de uso em uma frase curta e bonitinha.`;
             
             try {
-                const bahz = await ia.makeCognimaRequest('meta/llama-3.1-70b-instruct', prompt, null);
+                const bahz = await ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, prompt, null);
                 reply(formatAIResponse(bahz.data.choices[0].message.content));
             } catch (e) {
                 console.error("Erro geral ao buscar no dicionário:", e);
@@ -21659,7 +21660,45 @@ case 'nome-bot':
     await reply("🐝 Ops! Ocorreu um erro inesperado. Tente novamente em alguns instantes, por favor! 🥺");
     }
        break;
-    
+case 'setnvidia':
+  try  {
+      if  (!isOwner) return reply("Este comando é exclusivo para o meu dono!");
+      if  (!q) return reply(`Por favor, digite a nova chave da NVIDIA.\nExemplo: ${prefix}${command} nvapi-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`);
+    let config = JSON.parse(fs.readFileSync(CONFIG_FILE));
+    config.nvidia_api_key = q.trim();
+    writeJsonFile(CONFIG_FILE, config);
+    await reply(`✅ Chave da NVIDIA atualizada com sucesso! As próximas respostas da IA já usam essa credencial.`);
+    } catch (e) {
+    console.error(e);
+    await reply("🐝 Ops! Ocorreu um erro inesperado. Tente novamente em alguns instantes, por favor! 🥺");
+    }
+       break;
+case 'modeloia':
+case 'modelo-ia':
+  try  {
+      if  (!isOwner) return reply("Este comando é exclusivo para o meu dono!");
+    let config = JSON.parse(fs.readFileSync(CONFIG_FILE));
+    const currentModelId = isKnownNvidiaModel(config.nvidia_model) ? config.nvidia_model : DEFAULT_NVIDIA_MODEL;
+      if  (!q) {
+      const currentEntry = NVIDIA_MODEL_CATALOG.find(entry => entry.id === currentModelId);
+      const catalogLines = NVIDIA_MODEL_CATALOG
+        .map((entry, index) => `│ ${index + 1}. ${entry.label}${entry.id === currentModelId ? ' ✅' : ''}\n│    ${entry.description}`)
+        .join('\n│\n');
+      return reply(`╭━━━⊱ 🧠 *MODELO DA IA* 🧠 ⊱━━━╮\n│\n│ Modelo atual: ${currentEntry ? currentEntry.label : currentModelId}\n│\n${catalogLines}\n│\n│ Para trocar: ${prefix}${command} <número ou id>\n│ Exemplo: ${prefix}${command} 2\n╰━━━━━━━━━━━━━━━━━━━━━━━━╯`);
+    }
+    const trimmedChoice = q.trim();
+    const byIndex = /^[1-9]\d*$/.test(trimmedChoice) ? NVIDIA_MODEL_CATALOG[Number(trimmedChoice) - 1] : null;
+    const chosenEntry = byIndex || NVIDIA_MODEL_CATALOG.find(entry => entry.id === trimmedChoice);
+      if  (!chosenEntry) return reply(`❌ Modelo não reconhecido. Use ${prefix}${command} sem argumentos para ver as opções disponíveis.`);
+    config.nvidia_model = chosenEntry.id;
+    writeJsonFile(CONFIG_FILE, config);
+    await reply(`✅ Modelo da IA alterado para *${chosenEntry.label}*!`);
+    } catch (e) {
+    console.error(e);
+    await reply("🐝 Ops! Ocorreu um erro inesperado. Tente novamente em alguns instantes, por favor! 🥺");
+    }
+       break;
+
 case 'fotomenu':
 case 'videomenu':
 case 'mediamenu':

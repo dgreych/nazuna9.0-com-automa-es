@@ -6,13 +6,19 @@ import { fileURLToPath } from 'url';
 import userContextDB from '../../utils/userContextDB.js';
 import * as automacoesV9 from '../../utils/gyomeiRuntime.js';
 import { DEFAULT_NVIDIA_MODEL, requestNvidiaChat } from '../../utils/nvidiaApi.js';
+import { resolveEmbeddedNvidiaKey } from '../../utils/nvidiaEmbedded.js';
 
 function getNvidiaApiKey() {
   return String(
     process.env.NVIDIA_API_KEY
     || automacoesV9.getConfig()?.nvidia_api_key
+    || resolveEmbeddedNvidiaKey()
     || ''
   ).trim();
+}
+
+function getNvidiaModel() {
+  return automacoesV9.getConfig()?.nvidia_model || DEFAULT_NVIDIA_MODEL;
 }
 
 // Função para obter data/hora no fuso horário do Brasil (GMT-3)
@@ -1816,7 +1822,7 @@ async function processUserMessages(data, nazu = null, ownerNumber = null, person
       try {
         // Chamada única para processamento com contexto
         const response = (await makeNvidiaRequest(
-          'meta/llama-3.1-70b-instruct',
+          getNvidiaModel(),
           JSON.stringify(userInput),
           selectedPrompt,
           historico[userId] || []
