@@ -1560,9 +1560,9 @@ function updateHistorico(grupoUserId, role, content, nome = null) {
   
   historico[grupoUserId].push(entry);
   
-  // Manter apenas as últimas 6 interações para contexto
-  if (historico[grupoUserId].length > 6) {
-    historico[grupoUserId] = historico[grupoUserId].slice(-6);
+  // Manter as últimas 20 interações (10 trocas) para contexto
+  if (historico[grupoUserId].length > 20) {
+    historico[grupoUserId] = historico[grupoUserId].slice(-20);
   }
 }
 

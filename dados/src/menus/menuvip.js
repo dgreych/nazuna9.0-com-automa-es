@@ -17,7 +17,7 @@ async function menuVIP(prefix, botName = "MeuBot", userName = "Usuário", {
     const stats = getVipStats();
     
     let formattedHeader = header
-    .replace(/#user#/g, userName)
+    .replace(/#nome#/g, userName)
     .replace(/#prefix#/g, prefix);
     
     let menu = `${formattedHeader}

@@ -12843,7 +12843,7 @@ case 'rotate':
 case 'gemma':
     if  (!q) return reply(`🤔 Qual sua dúvida para o Gemma? Informe a pergunta após o comando! Exemplo: ${prefix}${command} quem descobriu o Brasil? 🌍`);
     reply(`⏳ Só um segundinho, estou consultando o Gemma... ✨`).then(() => {
-    ia.makeCognimaRequest('google/gemma-7b', q, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API Gemma:', e);
@@ -12860,7 +12860,7 @@ case 'phi':
 case 'phi3':
     if  (!q) return reply(`🤔 Qual sua dúvida para o Phi? Informe a pergunta após o comando! Exemplo: ${prefix}${command} quem descobriu o Brasil? 🌍`);
     reply(`⏳ Só um segundinho, estou consultando o Phi... ✨`).then(() => {
-    ia.makeCognimaRequest('microsoft/phi-3-medium-4k-instruct', q, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API Phi:', e);
@@ -12876,7 +12876,7 @@ case 'phi3':
 case 'qwen2':
     if  (!q) return reply(`🤔 Qual sua dúvida para o Qwen2? Informe a pergunta após o comando! Exemplo: ${prefix}${command} quem descobriu o Brasil? 🌍`);
     reply(`⏳ Só um segundinho, estou consultando o Qwen2... ✨`).then(() => {
-    ia.makeCognimaRequest('qwen/qwen2-7b-instruct', q, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API Qwen2:', e);
@@ -12893,7 +12893,7 @@ case 'qwen':
 case 'qwen3':
     if  (!q) return reply(`🤔 Qual sua dúvida para o Qwen? Informe a pergunta após o comando! Exemplo: ${prefix}${command} quem descobriu o Brasil? 🌍`);
     reply(`⏳ Só um segundinho, estou consultando o Qwen... ✨`).then(() => {
-    ia.makeCognimaRequest('qwen/qwen3-235b-a22b', q, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API Qwen:', e);
@@ -12910,7 +12910,7 @@ case 'llama':
 case 'llama3':
     if  (!q) return reply(`🤔 Qual sua dúvida para o Llama? Informe a pergunta após o comando! Exemplo: ${prefix}${command} quem descobriu o Brasil? 🌍`);
     reply(`⏳ Só um segundinho, estou consultando o Llama... ✨`).then(() => {
-    ia.makeCognimaRequest('abacusai/dracarys-llama-3.1-70b-instruct', q, null).then((response) => {
+    ia.makeCognimaRequest('meta/llama-3.1-8b-instruct', q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API Llama:', e);
@@ -12926,7 +12926,7 @@ case 'baichuan':
 case 'baichuan2':
     if  (!q) return reply(`🤔 Qual sua dúvida para o Baichuan? Informe a pergunta após o comando! Exemplo: ${prefix}${command} quem descobriu o Brasil? 🌍`);
     reply(`⏳ Só um segundinho, estou consultando o Baichuan... ✨`).then(() => {
-    ia.makeCognimaRequest('baichuan-inc/baichuan2-13b-chat', q, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API Baichuan:', e);
@@ -12942,7 +12942,7 @@ case 'marin':
     if  (!q) return reply(`🤔 Qual sua dúvida para o Marin? Informe a pergunta após o comando! Exemplo: ${prefix}${command} quem descobriu o Brasil? 🌍`);
     
     reply(`⏳ Só um segundinho, estou consultando o Marin... ✨`).then(() => {
-    ia.makeCognimaRequest('marin/marin-8b-instruct', q, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API Marin:', e);
@@ -12976,7 +12976,7 @@ case 'mistral':
     if  (!q) return reply(`🤔 Qual sua dúvida para o Mistral? Informe a pergunta após o comando! Exemplo: ${prefix}${command} quem descobriu o Brasil? 🌍`);
     
     reply(`⏳ Só um segundinho, estou consultando o Mistral... ✨`).then(() => {
-    ia.makeCognimaRequest('mistralai/mistral-small-24b-instruct', q, null).then((response) => {
+    ia.makeCognimaRequest('mistralai/mistral-nemotron', q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API Mistral:', e);
@@ -12993,7 +12993,7 @@ case 'magistral':
     if  (!q) return reply(`🤔 Qual sua dúvida para o Magistral? Informe a pergunta após o comando! Exemplo: ${prefix}${command} quem descobriu o Brasil? 🌍`);
     
     reply(`⏳ Só um segundinho, estou consultando o Magistral... ✨`).then(() => {
-    ia.makeCognimaRequest('mistralai/magistral-small-2506', q, null).then((response) => {
+    ia.makeCognimaRequest('mistralai/mistral-nemotron', q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API Magistral:', e);
@@ -13011,7 +13011,7 @@ case 'rocket':
     if  (!q) return reply(`🤔 Qual sua dúvida para o RakutenAI? Informe a pergunta após o comando! Exemplo: ${prefix}${command} quem descobriu o Brasil? 🌍`);
     
     reply(`⏳ Só um segundinho, estou consultando o RakutenAI... ✨`).then(() => {
-    ia.makeCognimaRequest('rakuten/rakutenai-7b-instruct', q, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API RakutenAI:', e);
@@ -13028,7 +13028,7 @@ case 'yi':
     if  (!q) return reply(`🤔 Qual sua dúvida para o Yi? Informe a pergunta após o comando! Exemplo: ${prefix}${command} quem descobriu o Brasil? 🌍`);
     
     reply(`⏳ Só um segundinho, estou consultando o Yi... ✨`).then(() => {
-    ia.makeCognimaRequest('01-ai/yi-large', q, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API Yi:', e);
@@ -13045,7 +13045,7 @@ case 'gemma2':
     if  (!q) return reply(`🤔 Qual sua dúvida para o Gemma2? Informe a pergunta após o comando! Exemplo: ${prefix}${command} quem descobriu o Brasil? 🌍`);
     
     reply(`⏳ Só um segundinho, estou consultando o Gemma2... ✨`).then(() => {
-    ia.makeCognimaRequest('google/gemma-2-27b-it', q, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API Gemma2:', e);
@@ -13062,7 +13062,7 @@ case 'swallow':
     if  (!q) return reply(`🤔 Qual sua dúvida para o Swallow? Informe a pergunta após o comando! Exemplo: ${prefix}${command} quem descobriu o Brasil? 🌍`);
     
     reply(`⏳ Só um segundinho, estou consultando o Swallow... ✨`).then(() => {
-    ia.makeCognimaRequest('qwen/qwen3-235b-a22b', q, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API Swallow:', e);
@@ -13079,7 +13079,7 @@ case 'falcon':
     if  (!q) return reply(`🤔 Qual sua dúvida para o Falcon? Informe a pergunta após o comando! Exemplo: ${prefix}${command} quem descobriu o Brasil? 🌍`);
     
     reply(`⏳ Só um segundinho, estou consultando o Falcon... ✨`).then(() => {
-    ia.makeCognimaRequest('tiiuae/falcon3-7b-instruct', q, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API Falcon:', e);
@@ -13096,7 +13096,7 @@ case 'qwencoder':
     if  (!q) return reply(`🤔 Qual sua dúvida para o Qwencoder? Informe a pergunta após o comando! Exemplo: ${prefix}${command} quem descobriu o Brasil? 🌍`);
     
     reply(`⏳ Só um segundinho, estou consultando o Qwencoder... ✨`).then(() => {
-    ia.makeCognimaRequest('qwen/qwen2.5-coder-32b-instruct', q, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API Qwencoder:', e);
@@ -13113,7 +13113,7 @@ case 'codegemma':
     if  (!q) return reply(`🤔 Qual sua dúvida para o CodeGemma? Informe a pergunta após o comando! Exemplo: ${prefix}${command} quem descobriu o Brasil? 🌍`);
     
     reply(`⏳ Só um segundinho, estou consultando o CodeGemma... ✨`).then(() => {
-    ia.makeCognimaRequest('google/codegemma-7b', q, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API CodeGemma:', e);
@@ -13131,7 +13131,7 @@ case 'resumir':
     
     reply('⏳ Aguarde enquanto preparo um resumo bem caprichado... ✨').then(() => {
     const prompt = `Resuma o seguinte texto em poucos parágrafos, de forma clara e objetiva, destacando as informações mais importantes:\n\n${q}`;
-    ia.makeCognimaRequest('qwen/qwen3-235b-a22b', prompt, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, prompt, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro ao resumir texto:', e);
@@ -13165,7 +13165,7 @@ case 'resumirurl':
     return;
       }
       const prompt = `Resuma o seguinte conteúdo extraído de uma página web em poucos parágrafos, de forma clara e objetiva, destacando os pontos principais:\n\n${cleanText.substring(0, 5000)}`;
-      ia.makeCognimaRequest('qwen/qwen3-235b-a22b', prompt, null).then((iaResponse) => {
+      ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, prompt, null).then((iaResponse) => {
     reply(formatAIResponse(iaResponse.data.choices[0].message.content));
       }).catch((e) => {
     console.error('Erro ao resumir URL (IA):', e.message);
@@ -13195,7 +13195,7 @@ case 'ideia':
     
     reply('⏳ Um segundinho, estou pensando em ideias incríveis... ✨').then(() => {
     const prompt = `Gere 15 ideias criativas e detalhadas para o seguinte tema: ${q}`;
-    ia.makeCognimaRequest('microsoft/phi-3-medium-128k-instruct', prompt, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, prompt, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro ao gerar ideias:', e);
@@ -13215,7 +13215,7 @@ case 'explique':
     
     reply('⏳ Um momentinho, estou preparando uma explicação bem clara... ✨').then(() => {
     const prompt = `Explique o seguinte conceito de forma simples e clara, como se fosse para alguém sem conhecimento prévio: ${q}`;
-    ia.makeCognimaRequest('qwen/qwen3-235b-a22b', prompt, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, prompt, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro ao explicar conceito:', e);
@@ -13234,7 +13234,7 @@ case 'correcao':
     
     reply('⏳ Aguarde enquanto dou um polimento no seu texto... ✨').then(() => {
     const prompt = `Corrija os erros gramaticais, ortográficos e de estilo no seguinte texto, mantendo o significado original: ${q}`;
-    ia.makeCognimaRequest('qwen/qwen3-235b-a22b', prompt, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, prompt, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro ao corrigir texto:', e);
@@ -13324,7 +13324,7 @@ ${conversaTexto.substring(0, 8000)}
 
 Faça um resumo conciso mas completo, destacando o que é mais relevante.`;
 
-    return ia.makeCognimaRequest('abacusai/dracarys-llama-3.1-70b-instruct', prompt, null);
+    return ia.makeCognimaRequest('meta/llama-3.1-8b-instruct', prompt, null);
     }).then(response => {
     return reply(`💬 *Resumo da Conversa* (últimas mensagens)\n\n${formatAIResponse(response.data.choices[0].message.content)}`);
     }).catch(e => {
@@ -13388,7 +13388,7 @@ case 'gerarhistoria': {
 
 Seja criativo e original. Não use clichês. A história deve ser envolvente do início ao fim.`;
 
-    const response = await ia.makeCognimaRequest('qwen/qwen3-235b-a22b', prompt, null);
+    const response = await ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, prompt, null);
     await reply(`📖✨ *Sua História*\n\n${formatAIResponse(response.data.choices[0].message.content)}`);
     } catch (e) {
     console.error('Erro ao gerar história:', e);
@@ -13445,7 +13445,7 @@ Para cada recomendação, forneça:
 
 Seja específico e recomende opções variadas (populares e menos conhecidas). Formate de forma clara e organizada.`;
 
-    const response = await ia.makeCognimaRequest('qwen/qwen3-235b-a22b', prompt, null);
+    const response = await ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, prompt, null);
     await reply(`${tipoInfo.emoji} *Recomendações de ${tipoInfo.nome.charAt(0).toUpperCase() + tipoInfo.nome.slice(1)}*\n\n${formatAIResponse(response.data.choices[0].message.content)}`);
     } catch (e) {
     console.error('Erro ao gerar recomendações:', e);
@@ -15461,7 +15461,7 @@ case 'cog':
     if  (!q) return reply(`📢 Ei, falta a pergunta! Me diga o que quer saber após o comando ${prefix}cog! 😴`);
     
     reply('⏳ Um momentinho, estou pensando na melhor resposta... 🌟').then(() => {
-    ia.makeCognimaRequest('cognima/CognimAI', q, null).then((response) => {
+    ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, q, null).then((response) => {
       reply(formatAIResponse(response.data.choices[0].message.content));
     }).catch((e) => {
       console.error('Erro na API CognimAI:', e);
@@ -15484,7 +15484,7 @@ Exemplo: ${prefix}tradutor espanhol | Olá mundo! ✨`);
     const texto = partes.slice(1).join('|').trim();
     reply('Aguarde um momentinho... ☀️').then(() => {
       const prompt = `Traduza o seguinte texto para ${idioma}:\n\n${texto}\n\nForneça apenas a tradução, sem explicações adicionais.`;
-      ia.makeCognimaRequest('qwen/qwen3-235b-a22b', prompt, null).then((bahz) => {
+      ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, prompt, null).then((bahz) => {
     reply(`🌐✨ *Prontinho! Sua tradução para ${idioma.toUpperCase()} está aqui:*\n\n${formatAIResponse(bahz.data.choices[0].message.content)}`);
       }).catch((e) => {
     console.error("Erro ao traduzir texto:", e);
@@ -29143,7 +29143,7 @@ case 'debate':
     
     // Função wrapper para a IA
     const aiFunctionDebate = (prompt) => {
-    return ia.makeCognimaRequest('qwen/qwen3-235b-a22b', prompt, null)
+    return ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, prompt, null)
       .then(response => response?.data?.choices?.[0]?.message?.content || '');
     };
     
@@ -29167,7 +29167,7 @@ case 'aventura':
     
     // Função wrapper para a IA
     const aiFunctionStory = (prompt) => {
-    return ia.makeCognimaRequest('qwen/qwen3-235b-a22b', prompt, null)
+    return ia.makeCognimaRequest(DEFAULT_NVIDIA_MODEL, prompt, null)
       .then(response => response?.data?.choices?.[0]?.message?.content || '');
     };
     

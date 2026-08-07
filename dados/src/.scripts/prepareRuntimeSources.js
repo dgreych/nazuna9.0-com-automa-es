@@ -102,7 +102,7 @@ function patchIndexSource(source) {
   );
 
   const oldIaCondition = `if (!info.key.fromMe && isAssistente && !isCmd && !info._fromPro && ((_botShort && budy2.includes(_botShort)) || (menc_os2 && menc_os2 == botNumber))) {`;
-  const newIaCondition = `const _quotedParticipantRaw = info.message?.extendedTextMessage?.contextInfo?.participant || '';
+  const newIaCondition = `const _quotedParticipantRaw = getQuotedContextInfo(info.message)?.participant || info.message?.extendedTextMessage?.contextInfo?.participant || '';
     const _quotedParticipant = String(_quotedParticipantRaw).split(':')[0].split('@')[0];
     const _replyBotIds = [
       _botShort,

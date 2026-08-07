@@ -1,28 +1,29 @@
 import axios from 'axios';
 
 export const NVIDIA_CHAT_ENDPOINT = 'https://integrate.api.nvidia.com/v1/chat/completions';
-export const DEFAULT_NVIDIA_MODEL = 'meta/llama-3.1-8b-instruct';
+export const DEFAULT_NVIDIA_MODEL = 'nvidia/llama-3.3-nemotron-super-49b-v1';
 
 // Modelos gratuitos da NVIDIA selecionados para a tarefa de assistente em
-// grupos, testados ao vivo (latência real, não só presença no catálogo —
-// vários modelos "grandes" do catálogo público respondem em mais de um
-// minuto ou nem respondem no tier gratuito). Donos escolhem entre eles com
-// "!modeloia".
+// grupos, testados ao vivo (latência real e aderência ao personagem, não só
+// presença no catálogo público — vários modelos "grandes" do catálogo
+// respondem em mais de um minuto ou nem respondem no tier gratuito, e
+// modelos pequenos demais ignoram a personalidade do prompt). Donos
+// escolhem entre eles com "!modeloia".
 export const NVIDIA_MODEL_CATALOG = [
   {
-    id: 'meta/llama-3.1-8b-instruct',
-    label: 'Llama 3.1 8B (padrão)',
-    description: 'Resposta em menos de 1s no tier gratuito, bom em português e estável no contrato JSON.'
+    id: 'nvidia/llama-3.3-nemotron-super-49b-v1',
+    label: 'Nemotron Super 49B (padrão)',
+    description: 'Responde em poucos segundos e mantém a personalidade do Gyomei de forma consistente.'
   },
   {
-    id: 'nvidia/nvidia-nemotron-nano-9b-v2',
-    label: 'Nemotron Nano 9B',
-    description: 'Ajustado pela própria NVIDIA para seguir instruções, também rápido no tier gratuito.'
+    id: 'meta/llama-3.1-8b-instruct',
+    label: 'Llama 3.1 8B (mais rápido)',
+    description: 'Resposta em menos de 1s, mas segue a personalidade com menos consistência.'
   },
   {
     id: 'meta/llama-3.2-3b-instruct',
     label: 'Llama 3.2 3B (mais leve)',
-    description: 'Modelo mais enxuto da família, resposta ainda mais rápida para perguntas simples.'
+    description: 'Modelo mais enxuto da família, útil só para perguntas simples e diretas.'
   }
 ];
 
