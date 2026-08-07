@@ -17,8 +17,8 @@ import { fileURLToPath } from 'url';
 import { PerformanceOptimizer, getPerformanceOptimizer } from './utils/performanceOptimizer.js';
 import { recalcEquipmentBonuses } from './utils/equipment.js';
 import * as ia from './funcs/private/ia.js';
-import { NVIDIA_MODEL_CATALOG, isKnownNvidiaModel, DEFAULT_NVIDIA_MODEL } from './utils/nvidiaApi.js';
 import { getQuotedContextInfo, loadSafeCommandAliases, resolveCommandInput } from './utils/commandResolver.js';
+import { NVIDIA_MODEL_CATALOG, isKnownNvidiaModel, DEFAULT_NVIDIA_MODEL } from './utils/nvidiaApi.js';
 import * as vipCommandsManager from './utils/vipCommandsManager.js';
 import { getInfo as gdriveGetInfo } from './funcs/utils/gdrive.js';
 import { getInfo as mediafireGetInfo } from './funcs/utils/mediafire.js';
@@ -2284,7 +2284,7 @@ async function NazuninhaBotExec(nazu, info, store, messagesCache, rentalExpirati
     const isAntiBtn = groupData.antibtn;
     const isAntiStatus = groupData.antistatus;
     const isAutoRepo = groupData.autorepo;
-    const isAssistente = groupData.assistente;
+    const isAssistente = groupData.assistente !== false;
     const isModoLite = isGroup && isModoLiteActive(groupData, modoLiteGlobal);
     
     if (type === 'reactionMessage') {
@@ -28053,9 +28053,9 @@ case 'assistent':
       
       const statusMsg = groupData.assistente 
     ? `✅ *Assistente ativada com sucesso!*\n\n` +
-      `🤖 *Personalidade atual:* ${groupData.assistentePersonality === 'nazuna' ? 'Nazuna (Padrão)' : groupData.assistentePersonality === 'humana' ? 'Humana' : groupData.assistentePersonality === 'pro' ? 'Pro (Comandos)' : 'IA Normal'}\n\n` +
+      `🤖 *Personalidade atual:* ${groupData.assistentePersonality === 'nazuna' ? 'Gyomei (Padrão)' : groupData.assistentePersonality === 'humana' ? 'Humana' : groupData.assistentePersonality === 'pro' ? 'Pro (Comandos)' : 'IA Normal'}\n\n` +
       `💡 *Trocar personalidade:*\n` +
-      `• ${prefix}assistente nazuna - Personalidade padrão Nazuna\n` +
+      `• ${prefix}assistente nazuna - Personalidade padrão Gyomei\n` +
       `• ${prefix}assistente humana - Age 100% como humana\n` +
       `• ${prefix}assistente ia - IA normal sem personalidade\n` +
       `• ${prefix}assistente pro - Interpreta comandos em linguagem natural\n\n` +
@@ -28071,7 +28071,7 @@ case 'assistent':
       if  (!['nazuna', 'humana', 'ia', 'pro'].includes(personality)) {
       return reply(`❌ *Personalidade inválida!*\n\n` +
     `Escolha uma das opções:\n` +
-    `• ${prefix}assistente nazuna - Personalidade padrão Nazuna (vampira tsundere)\n` +
+    `• ${prefix}assistente nazuna - Personalidade padrão Gyomei\n` +
     `• ${prefix}assistente humana - Age 100% como uma pessoa real\n` +
     `• ${prefix}assistente ia - IA normal e objetiva\n` +
     `• ${prefix}assistente pro - Interpreta comandos em linguagem natural`);
@@ -28082,7 +28082,7 @@ case 'assistent':
     fs.writeFileSync(groupFilePath, JSON.stringify(groupData, null, 2));
     
     const personalityNames = {
-      'nazuna': '🌙 *Nazuna* - Vampira moderna com personalidade tsundere',
+      'nazuna': '🪨 *Gyomei* - Sereno, firme e protetor, guardião do grupo',
       'humana': '👤 *Humana* - Age como uma pessoa real, nunca admite ser IA',
       'ia': '🤖 *IA Normal* - Assistente objetiva e direta',
       'pro': '⚡ *Pro* - Interpreta comandos em linguagem natural (não responde, só executa)'
