@@ -1770,8 +1770,8 @@ async function processUserMessages(data, nazu = null, ownerNumber = null, person
     const isNightTime = hour >= 18 || hour < 6;
     
     for (const msgValidada of mensagensValidadas) {
-      // Agora usa apenas o ID do usuário + personalidade para manter contexto entre grupos
-      const userId = `${msgValidada.id_enviou}_${personality}`;
+      // Escopado por grupo: informação dita em um grupo não pode vazar para outro
+      const userId = `${msgValidada.id_grupo || 'dm'}_${msgValidada.id_enviou}_${personality}`;
       
       // Registrar interação
       userContextDB.registerInteraction(userId, msgValidada.texto);
