@@ -28038,45 +28038,53 @@ case 'assistent':
     
     const groupFilePath = __dirname + `/../database/grupos/${from}.json`;
     let groupData = fs.existsSync(groupFilePath) ? JSON.parse(fs.readFileSync(groupFilePath)) : {};
-    
-    // Se não tem argumento, apenas ativa/desativa
+    const isAssistenteOn = groupData.assistente !== false;
+    const currentPersonalityLabel = groupData.assistentePersonality === 'humana' ? 'Humana' : groupData.assistentePersonality === 'pro' ? 'Pro (Comandos)' : groupData.assistentePersonality === 'ia' ? 'IA Normal' : 'Gyomei (Padrão)';
+
+    // Sem argumento: mostra o menu de status/seleção, nunca alterna sozinho
       if  (!q) {
-      groupData.assistente = !groupData.assistente;
-    if  (!groupData.assistente) {
-    // Se desativar, remove a personalidade
-    delete groupData.assistentePersonality;
-      } else {
-    // Se ativar sem especificar, usa padrão
-    groupData.assistentePersonality = groupData.assistentePersonality || 'nazuna';
-      }
+      return reply(`╭━━━⊱ 🪨 *ASSISTENTE* 🪨 ⊱━━━╮\n` +
+    `│\n` +
+    `│ Status: ${isAssistenteOn ? '✅ Ativada' : '❌ Desativada'}\n` +
+    `│ Personalidade atual: ${currentPersonalityLabel}\n` +
+    `│\n` +
+    `│ *Ligar/desligar:*\n` +
+    `│ ${prefix}assistente on\n` +
+    `│ ${prefix}assistente off\n` +
+    `│\n` +
+    `│ *Escolher personalidade:*\n` +
+    `│ ${prefix}assistente gyomei - Guardião sereno e protetor (padrão)\n` +
+    `│ ${prefix}assistente humana - Age 100% como uma pessoa real\n` +
+    `│ ${prefix}assistente ia - IA normal e objetiva\n` +
+    `│ ${prefix}assistente pro - Interpreta comandos em linguagem natural\n` +
+    `│\n` +
+    `│ Mencione o bot ou responda a uma mensagem dele pra conversar.\n` +
+    `╰━━━━━━━━━━━━━━━━━━━━━━━━╯`);
+    }
+
+    const arg = q.toLowerCase().trim();
+
+      if  (arg === 'on' || arg === 'ligar' || arg === 'ativar') {
+      groupData.assistente = true;
+      groupData.assistentePersonality = groupData.assistentePersonality || 'nazuna';
       fs.writeFileSync(groupFilePath, JSON.stringify(groupData, null, 2));
-      
-      const statusMsg = groupData.assistente 
-    ? `✅ *Assistente ativada com sucesso!*\n\n` +
-      `🤖 *Personalidade atual:* ${groupData.assistentePersonality === 'nazuna' ? 'Gyomei (Padrão)' : groupData.assistentePersonality === 'humana' ? 'Humana' : groupData.assistentePersonality === 'pro' ? 'Pro (Comandos)' : 'IA Normal'}\n\n` +
-      `💡 *Trocar personalidade:*\n` +
-      `• ${prefix}assistente nazuna - Personalidade padrão Gyomei\n` +
-      `• ${prefix}assistente humana - Age 100% como humana\n` +
-      `• ${prefix}assistente ia - IA normal sem personalidade\n` +
-      `• ${prefix}assistente pro - Interpreta comandos em linguagem natural\n\n` +
-      `🧠 A IA aprende com base nos padrões de conversa para oferecer respostas mais relevantes.`
-    : `❌ *Assistente desativada!*`;
-      
-      return reply(statusMsg);
+      return reply(`✅ *Assistente ativada!* Personalidade atual: ${currentPersonalityLabel}.`);
     }
-    
-    // Se tem argumento, define a personalidade
-    const personality = q.toLowerCase().trim();
-    
+
+      if  (arg === 'off' || arg === 'desligar' || arg === 'desativar') {
+      groupData.assistente = false;
+      fs.writeFileSync(groupFilePath, JSON.stringify(groupData, null, 2));
+      return reply(`❌ *Assistente desativada!*`);
+    }
+
+    // Qualquer outro argumento define a personalidade (e liga a assistente)
+    const personality = arg === 'gyomei' ? 'nazuna' : arg;
+
       if  (!['nazuna', 'humana', 'ia', 'pro'].includes(personality)) {
-      return reply(`❌ *Personalidade inválida!*\n\n` +
-    `Escolha uma das opções:\n` +
-    `• ${prefix}assistente nazuna - Personalidade padrão Gyomei\n` +
-    `• ${prefix}assistente humana - Age 100% como uma pessoa real\n` +
-    `• ${prefix}assistente ia - IA normal e objetiva\n` +
-    `• ${prefix}assistente pro - Interpreta comandos em linguagem natural`);
+      return reply(`❌ *Opção inválida!*\n\n` +
+    `Use ${prefix}assistente sem argumento pra ver o menu completo.`);
     }
-    
+
     groupData.assistente = true;
     groupData.assistentePersonality = personality;
     fs.writeFileSync(groupFilePath, JSON.stringify(groupData, null, 2));
