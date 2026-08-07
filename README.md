@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/nazuna-gyomei-banner.jpg" alt="NAZUNA BOT - versão modificada GYOMEI" width="100%">
+  <img src="assets/nazuna-gyomei-banner.png" alt="NAZUNA BOT - versão modificada GYOMEI" width="100%">
 </p>
 
 <h1 align="center">NAZUNA BOT • versão modificada GYOMEI</h1>
