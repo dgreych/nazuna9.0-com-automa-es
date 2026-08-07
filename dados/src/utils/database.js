@@ -323,34 +323,29 @@ try {
 const defaultMsgBotOnEnabled = configForMsgBotOn.numerodono === '553391967445' ? false : true;
 
 ensureJsonFileExists(MSGBOTON_FILE, { enabled: defaultMsgBotOnEnabled,
-message: `🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟
+message: `🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨
 
-        ✨ *Oiiiii!* ✨
-        🤗💖
+       🙏 *GYOMEI está desperto*
+        🪨🙏🪨
 
-  Estou online e pronta para uso! 
-        🫟✨🫟✨🫟
+  Assumo minha vigília sobre este
+  grupo com serenidade e disciplina.
 
-  Muito obrigada por ter me escolhido! 
-  Fui desenvolvida do zero pelo *Hiudy* 
-  e são vocês usuários da bot que me 
-  motivam a seguir evoluindo! 
-        💕🫟💕
+  Pronto para servir, proteger e
+  cumprir cada tarefa que me for
+  confiada.
+        🪨🙏🪨
 
-  Espero que você goste da bot! 
-        ✨🫟✨
+  Esta jornada segue sobre a base
+  da Nazuna e o legado de *Hiudy*
+  e *DevTokyo*, agora sob o nome
+  de *GYOMEI*.
 
-  💬 *Considere entrar no meu grupo 
-  para tirar dúvidas e ficar por dentro 
-  das novidades:*
-  https://chat.whatsapp.com/I5d5tCyZsV4J7Cjn51IkbV
-        🫟💬🫟
+  _Para encerrar esta mensagem nas
+  próximas inicializações, use
+  *msgboton*._
 
-  _Para desativar esta mensagem de 
-  inicialização, use o comando 
-  *msgboton*_
-
-🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟`
+🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨`
 });
 
 ensureJsonFileExists(CUSTOM_REACTS_FILE, { reacts: [] });
@@ -518,34 +513,29 @@ const loadMsgBotOn = () => {
   
   const data = loadJsonFile(MSGBOTON_FILE, { 
     enabled: defaultEnabled,
-    message: `🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟
+    message: `🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨
 
-        ✨ *Oiiiii!* ✨
-        🤗💖
+       🙏 *GYOMEI está desperto*
+        🪨🙏🪨
 
-  Estou online e pronta para uso! 
-        🫟✨🫟✨🫟
+  Assumo minha vigília sobre este
+  grupo com serenidade e disciplina.
 
-  Muito obrigada por ter me escolhido! 
-  Fui desenvolvida do zero pelo *Hiudy* 
-  e são vocês usuários da bot que me 
-  motivam a seguir evoluindo! 
-        💕🫟💕
+  Pronto para servir, proteger e
+  cumprir cada tarefa que me for
+  confiada.
+        🪨🙏🪨
 
-  Espero que você goste da bot! 
-        ✨🫟✨
+  Esta jornada segue sobre a base
+  da Nazuna e o legado de *Hiudy*
+  e *DevTokyo*, agora sob o nome
+  de *GYOMEI*.
 
-  💬 *Considere entrar no meu grupo 
-  para tirar dúvidas e ficar por dentro 
-  das novidades:*
-  https://chat.whatsapp.com/I5d5tCyZsV4J7Cjn51IkbV
-        🫟💬🫟
+  _Para encerrar esta mensagem nas
+  próximas inicializações, use
+  *msgboton*._
 
-  _Para desativar esta mensagem de 
-  inicialização, use o comando 
-  *msgboton*_
-
-🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟🫟`
+🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨`
   });
   return data;
 };

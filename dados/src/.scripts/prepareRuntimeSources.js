@@ -449,5 +449,4 @@ export function prepareRuntimeSources() {
   fs.writeFileSync(path.join(SRC_DIR, 'menus', '.runtime-menubn.js'), patchMenubnSource(menubnSource));
   fs.writeFileSync(path.join(SCRIPTS_DIR, '.runtime-start.js'), patchStartSource(startSource));
 
-  console.log('🪨 GYOMEI preparado: IA, automações, mídias e guardiões carregados.');
 }

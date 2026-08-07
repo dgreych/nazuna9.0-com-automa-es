@@ -204,9 +204,6 @@ export function applyCriticalRuntimeFixes() {
 
   fs.writeFileSync(RUNTIME_INDEX, runtimeIndex);
   fs.writeFileSync(RUNTIME_IA, runtimeIa);
-
-  console.log('🧭 Aliases oficiais protegidos e comando d/delete corrigido.');
-  console.log('🟢 Cliente NVIDIA corrigido: HTTP 410 não entra em repetição inútil.');
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {

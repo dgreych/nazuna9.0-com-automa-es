@@ -30300,7 +30300,6 @@ case 'rico':
 case 'pobre':
 case 'pirocudo':
 case 'pirokudo':
-case 'nazista':
 case 'ladrao':
 case 'safado':
 case 'vesgo':
@@ -30430,7 +30429,7 @@ case 'viaja nte':
 case 'responsavel':
 case 'irresponsavel':
   try  {
-      if  (isModoLite && ['pirocudo', 'pirokudo', 'gostoso', 'nazista', 'machista', 'homofobico', 'racista'].includes(command)) return nazu.react('❌', {
+      if  (isModoLite && ['pirocudo', 'pirokudo', 'gostoso', 'machista', 'homofobico', 'racista'].includes(command)) return nazu.react('❌', {
       key: info.key
     });
       if  (!isGroup) return reply("isso so pode ser usado em grupo 💔");
@@ -30554,7 +30553,7 @@ case 'insegura':
 case 'madura':
 case 'seria':
   try  {
-      if  (isModoLite && ['bucetuda', 'cachorra', 'vagabunda', 'racista', 'nazista', 'gostosa', 'machista', 'homofobica'].includes(command)) return nazu.react('❌', {
+      if  (isModoLite && ['bucetuda', 'cachorra', 'vagabunda', 'racista', 'gostosa', 'machista', 'homofobica'].includes(command)) return nazu.react('❌', {
       key: info.key
     });
       if  (!isGroup) return reply("isso so pode ser usado em grupo 💔");
@@ -30641,7 +30640,7 @@ case 'rankvisionarios':
 case 'rankpoderosos':
 case 'rankvencedores':
   try  {
-      if  (isModoLite && ['rankgostoso', 'rankgostosos', 'ranknazista'].includes(command)) return nazu.react('❌', {
+      if  (isModoLite && ['rankgostoso', 'rankgostosos'].includes(command)) return nazu.react('❌', {
       key: info.key
     });
       if  (!isGroup) return reply("isso so pode ser usado em grupo 💔");
@@ -30723,7 +30722,7 @@ case 'rankvisionarias':
 case 'rankpoderosas':
 case 'rankvencedoras':
   try  {
-      if  (isModoLite && ['rankgostosa', 'rankgostosas', 'ranknazista'].includes(command)) return nazu.react('❌', {
+      if  (isModoLite && ['rankgostosa', 'rankgostosas'].includes(command)) return nazu.react('❌', {
       key: info.key
     });
       if  (!isGroup) return reply("isso so pode ser usado em grupo 💔");

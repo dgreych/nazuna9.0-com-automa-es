@@ -72,10 +72,9 @@ if (fs.existsSync(runtimeIaPath)) {
 if (fs.existsSync(runtimeStartPath)) {
   const runtimeStart = fs.readFileSync(runtimeStartPath, 'utf8');
   assert(
-    runtimeStart.includes('NAZUNA BOT — versão modificada GYOMEI'),
-    'inicialização exibe o nome correto do projeto'
+    runtimeStart.includes('GYOMEI — O guardião despertou'),
+    'inicialização reflete a identidade e o tom do Gyomei'
   );
-  assert(!runtimeStart.includes('GYOMEI — O guardião despertou'), 'inicialização não renomeia o projeto para GYOMEI');
 }
 
 if (fs.existsSync(storePath)) {

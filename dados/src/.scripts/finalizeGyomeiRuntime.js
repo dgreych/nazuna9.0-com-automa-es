@@ -136,23 +136,7 @@ export function finalizeGyomeiRuntime() {
 
   runtimeIa = externalizeIaKey(runtimeIa);
 
-  runtimeStart = replaceRequired(
-    runtimeStart,
-    `    \`\${colors.bold}🪨 GYOMEI — O guardião despertou\${colors.reset}\`,\n    \`\${colors.bold}🙏 Força, serenidade e disciplina em cada mensagem\${colors.reset}\`,\n    \`\${colors.bold}📦 Base Nazuna: \${version}\${colors.reset}\`,`,
-    `    \`\${colors.bold}🤖 NAZUNA BOT — versão modificada GYOMEI\${colors.reset}\`,\n    \`\${colors.bold}🪨 Personalidade e automações GYOMEI carregadas\${colors.reset}\`,\n    \`\${colors.bold}📦 Versão modificada: \${version} • Base Nazuna 9.0\${colors.reset}\`,`,
-    'identidade correta na inicialização'
-  );
-  runtimeStart = runtimeStart.replace(
-    '🛑 GYOMEI recolhe suas contas de oração. Encerrando com segurança...',
-    '🛑 NAZUNA BOT • GYOMEI encerrando com segurança...'
-  );
-
   fs.writeFileSync(RUNTIME_INDEX, runtimeIndex);
   fs.writeFileSync(RUNTIME_IA, runtimeIa);
   fs.writeFileSync(RUNTIME_START, runtimeStart);
-  console.log('🖼️ Download de mídia da versão GYOMEI finalizado.');
-  console.log('👨‍💻 Créditos da Nazuna e dos aprimoramentos atualizados.');
-  console.log('🔎 Saída de comandos similares aprimorada.');
-  console.log('🤖 Identidade pública definida como NAZUNA BOT — versão modificada GYOMEI.');
-  console.log('🔐 Credencial NVIDIA externalizada no runtime.');
 }
