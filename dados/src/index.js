@@ -419,6 +419,82 @@ function getTopSimilarCommands(target, limit = 3) {
   }
 }
 
+let cachedValidCommandSet = null;
+function getValidCommandSet() {
+  if (cachedValidCommandSet) return cachedValidCommandSet;
+  try {
+    const fileContent = fs.readFileSync(__dirname + '/index.js', "utf8");
+    const commandsRegex = /case\s+['"](.+?)['"]/g;
+    const set = new Set();
+    let match;
+    while ((match = commandsRegex.exec(fileContent)) !== null) {
+      set.add(match[1]);
+    }
+    cachedValidCommandSet = set;
+    return set;
+  } catch (error) {
+    console.error('Erro ao carregar lista de comandos válidos:', error);
+    return new Set();
+  }
+}
+
+const COMMAND_EMOJI_OVERRIDES = {
+  menu: '📜', menuadm: '📜', menudown: '📜', menufig: '📜', menubn: '📜', menuia: '📜', menurpg: '📜', menuvip: '📜',
+  criador: '👑', ping: '🏓',
+  prefixo: '🔧', prefix: '🔧',
+  numerodono: '👤', 'numero-dono': '👤', nomedono: '👤', 'nome-dono': '👤',
+  nomebot: '🤖', botname: '🤖', 'nome-bot': '🤖',
+  setnvidia: '🔑', modeloia: '🧠', 'modelo-ia': '🧠',
+  prompts: '🪨', menuprompt: '🪨', promptmenu: '🪨', setprompt: '🪨', verprompt: '🪨', resetprompt: '🪨',
+  adddono: '➕', deldono: '➖', remdono: '➖', listdonos: '👑', donos: '👑',
+  setmidia: '🖼️', menumidia: '🖼️', listmidias: '🖼️', delmidia: '🗑️', remmidia: '🗑️',
+  t: '🎙️', transc: '🎙️', transcrever: '🎙️', autotr: '🎙️', autotransc: '🎙️',
+  return: '🗑️', return1: '🗑️', return2: '🗑️', return3: '🗑️', return4: '🗑️', return5: '🗑️',
+  d: '🗑️', delete: '🗑️', del: '🗑️', deletar: '🗑️',
+  ban: '🔨', kick: '🔨', promover: '⭐', promote: '⭐', rebaixar: '⬇️', demote: '⬇️',
+  mute: '🔇', desmute: '🔊', unmute: '🔊',
+  sticker: '🎨', figurinha: '🎨', fig: '🎨', s: '🎨',
+  tradutor: '🌐', translator: '🌐',
+  resumir: '📝', resumirchat: '📝', resumirgrupo: '📝', resumirconversa: '📝', resumirurl: '📝',
+  ideias: '💡', ideia: '💡', explicar: '💡', explique: '💡',
+  corrigir: '✍️', correcao: '✍️',
+  dicionario: '📔', dictionary: '📔',
+  historia: '📖', story: '📖', gerarhistoria: '📖',
+  historiainterativa: '🎲', storyinteractive: '🎲', aventura: '🎲',
+  debater: '⚖️', debate: '⚖️',
+  recomendar: '🎯', recomendacao: '🎯', suggest: '🎯',
+  cog: '🧠', qwen: '🧠', qwen2: '🧠', qwencoder: '🧠', mistral: '🧠', magistral: '🧠',
+  gemma: '🧠', gemma2: '🧠', codegemma: '🧠', phi: '🧠', phi3: '🧠', falcon: '🧠',
+  yi: '🧠', rakutenai: '🧠', rocket: '🧠', baichuan: '🧠', baichuan2: '🧠', marin: '🧠',
+  kimi: '🧠', kimik2: '🧠', llama: '🧠', llama3: '🧠', swallow: '🧠',
+  msgboton: '💬', msgprefix: '💬'
+};
+
+const COMMAND_EMOJI_PATTERNS = [
+  [/^rank/, '🏆'],
+  [/^(set|config|editar|alterar)/, '🔧'],
+  [/^(del|rem|apagar)/, '🗑️'],
+  [/^(add|criar|novo)/, '➕'],
+  [/^(list|ver|consultar)/, '📋'],
+  [/^menu/, '📜'],
+  [/figurinha|sticker|fig/, '🎨'],
+  [/baixar|download|down/, '⬇️'],
+  [/rpg|batalha|duelo|aventura/, '⚔️'],
+  [/economia|dinheiro|saldo|banco/, '💰'],
+  [/ban|kick|mute|puni|advert/, '🔨'],
+  [/gpt|assistente/, '🧠'],
+  [/grupo|group|adm/, '🛡️']
+];
+
+function pickCommandEmoji(command) {
+  const normalized = String(command || '').toLowerCase();
+  if (COMMAND_EMOJI_OVERRIDES[normalized]) return COMMAND_EMOJI_OVERRIDES[normalized];
+  for (const [pattern, emoji] of COMMAND_EMOJI_PATTERNS) {
+    if (pattern.test(normalized)) return emoji;
+  }
+  return '⚙️';
+}
+
 /**
  * Versão assíncrona do writeJsonFile - não bloqueia o event loop
  * @param {string} filePath - Caminho do arquivo
@@ -1956,7 +2032,12 @@ async function NazuninhaBotExec(nazu, info, store, messagesCache, rentalExpirati
       args.push(...newArgs);
       q = newArgs.join(' ');
     }
-    
+
+    // Reage na mensagem de quem pediu o comando com um emoji equivalente ao assunto
+    if (isCmd && command && getValidCommandSet().has(command)) {
+      nazu.sendMessage(from, { react: { text: pickCommandEmoji(command), key: info.key } }).catch(() => {});
+    }
+
     const isPremium = premiumListaZinha[sender] || premiumListaZinha[from] || isOwner;
     
     // Verificação de captcha para solicitações de entrada em grupos (DEVE vir ANTES de antipv)
