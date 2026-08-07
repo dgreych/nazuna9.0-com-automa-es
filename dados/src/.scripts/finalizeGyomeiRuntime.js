@@ -100,19 +100,15 @@ export function finalizeGyomeiRuntime() {
 │ Base utilizada: *Nazuna 9.0*
 │
 │ ⭐ *CRIAÇÃO ORIGINAL — HIUDY (HIDUY)*
-│ 📱 WhatsApp: https://wa.me/553391967445
 │ 🌐 GitHub: https://github.com/hiudyy
-│ 📸 Instagram: https://instagram.com/hiudyyy_
+│ 📱 WhatsApp: https://wa.me/553391967445
 │
 │ 🔄 *CONTINUIDADE DA NAZUNA — DEVTOKYO*
-│ 📱 WhatsApp: https://wa.me/5532985076326
 │ 🌐 GitHub: https://github.com/DevTokyoVx
-│ 📦 Projeto original: https://github.com/DevTokyoVx/nazuna
+│ 📱 WhatsApp: https://wa.me/5532985076326
 │
-│ 🛠️ *APRIMORAMENTOS DA VERSÃO GYOMEI*
-│ Responsável: *ALASKA_DEV*
-│ Novos comandos, automações, IA, compatibilidade e deploy.
-│ 🌐 Versão modificada: https://github.com/dgreych/nazuna9.0-com-automa-es
+│ 🛠️ *APRIMORAMENTOS DA VERSÃO GYOMEI — ALASKA_DEV*
+│ 🌐 GitHub: https://github.com/dgreych/nazuna9.0-com-automa-es
 │ 📱 WhatsApp: https://wa.me/5522997028553
 │
 │ Os créditos originais permanecem preservados.

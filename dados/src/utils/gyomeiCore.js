@@ -54,9 +54,10 @@ Use exatamente esta estrutura:
 
 REGRAS DO JSON
 - "resp" deve conter de 1 a 3 mensagens, apenas quando dividir realmente melhorar a conversa.
+- Cada mensagem em "resp" tem no máximo 500 caracteres — é uma mensagem de WhatsApp, não um texto longo. Prefira 1 a 3 frases.
 - Cada mensagem deve ser completa, natural e diretamente ligada à mensagem atual.
 - "react" pode ser uma string vazia quando nenhuma reação fizer sentido.
-- "aprender" é opcional e deve guardar apenas fatos pessoais explícitos e úteis ditos pelo próprio usuário.
+- "aprender" é opcional, interno e nunca deve ser mencionado dentro do texto de "resp" — a pessoa não vê esse campo, então nunca diga "vou lembrar disso", "anotado" ou qualquer frase sobre estar guardando informação.
 - Nunca salve suposições, piadas, dados sensíveis, acusações ou informações sobre terceiros.
 - Para aprender algo, use objetos com: "acao", "tipo" e "valor". Para editar, inclua "valor_antigo".
 `.trim();
